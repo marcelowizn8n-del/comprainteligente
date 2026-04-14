@@ -7,7 +7,7 @@
 <link rel="icon" type="image/png" href="/favicon.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet" />
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -16,12 +16,12 @@
     --surface:  #ffffff;
     --accent:   #5b4fff;
     --accent2:  #7c6fff;
+    --accent-bg: rgba(91,79,255,0.06);
     --text1:    #111010;
     --text2:    #6b6a72;
     --text3:    #9b9aa3;
     --border:   #e4e3de;
     --border2:  #d0cfca;
-    --radius:   12px;
     --radius2:  18px;
   }
 
@@ -32,37 +32,50 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAV ── */
+  nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 48px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .nav-brand {
+    display: flex; align-items: center; gap: 10px; text-decoration: none;
+  }
+  .nav-logo { width: 34px; height: 34px; border-radius: 9px; }
+  .nav-name { font-size: 16px; font-weight: 600; color: var(--text1); letter-spacing: -0.3px; }
+  .nav-links { display: flex; align-items: center; gap: 8px; }
+  .nav-link {
+    padding: 9px 18px; font-size: 14px; font-weight: 500; color: var(--text2);
+    text-decoration: none; border-radius: 9px; transition: all 0.15s;
+  }
+  .nav-link:hover { color: var(--text1); background: var(--accent-bg); }
+  .nav-cta {
+    display: inline-flex; align-items: center; gap: 8px; padding: 9px 20px;
+    background: var(--accent); color: #fff; border-radius: 9px; font-size: 14px;
+    font-weight: 500; text-decoration: none; transition: background 0.15s;
+  }
+  .nav-cta:hover { background: var(--accent2); }
+
+  /* ── AUTH ── */
+  .auth-wrap {
+    flex: 1;
+    display: flex;
     align-items: center;
     justify-content: center;
-    -webkit-font-smoothing: antialiased;
+    padding: 40px 24px;
   }
 
   .auth-container {
     width: 100%;
     max-width: 420px;
-    padding: 24px;
-  }
-
-  .auth-brand {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 40px;
-    text-decoration: none;
-  }
-  .auth-brand-icon {
-    width: 36px; height: 36px;
-    background: var(--accent);
-    border-radius: 9px;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .auth-brand-icon svg { width: 18px; height: 18px; }
-  .auth-brand-name {
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--text1);
-    letter-spacing: -0.3px;
   }
 
   .auth-card {
@@ -73,38 +86,22 @@
   }
 
   .auth-card h1 {
-    font-size: 22px;
-    font-weight: 600;
-    color: var(--text1);
-    margin-bottom: 6px;
-    letter-spacing: -0.3px;
+    font-size: 22px; font-weight: 600; color: var(--text1);
+    margin-bottom: 6px; letter-spacing: -0.3px;
   }
   .auth-card .subtitle {
-    font-size: 14px;
-    color: var(--text2);
-    margin-bottom: 28px;
+    font-size: 14px; color: var(--text2); margin-bottom: 28px;
   }
 
-  .form-group {
-    margin-bottom: 18px;
-  }
+  .form-group { margin-bottom: 18px; }
   .form-group label {
-    display: block;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text2);
-    margin-bottom: 6px;
+    display: block; font-size: 13px; font-weight: 500;
+    color: var(--text2); margin-bottom: 6px;
   }
   .form-group input {
-    width: 100%;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    color: var(--text1);
-    background: var(--bg);
-    border: 1px solid var(--border2);
-    border-radius: 10px;
-    padding: 12px 14px;
-    outline: none;
+    width: 100%; font-family: 'DM Sans', sans-serif; font-size: 14px;
+    color: var(--text1); background: var(--bg); border: 1px solid var(--border2);
+    border-radius: 10px; padding: 12px 14px; outline: none;
     transition: border-color 0.15s, box-shadow 0.15s;
   }
   .form-group input:focus {
@@ -115,126 +112,109 @@
   .form-group input::placeholder { color: var(--text3); }
 
   .form-options {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 24px;
-    font-size: 13px;
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 24px; font-size: 13px;
   }
   .form-options label {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    color: var(--text2);
-    cursor: pointer;
+    display: flex; align-items: center; gap: 6px; color: var(--text2); cursor: pointer;
   }
   .form-options input[type="checkbox"] {
-    accent-color: var(--accent);
-    width: 15px; height: 15px;
-    cursor: pointer;
+    accent-color: var(--accent); width: 15px; height: 15px; cursor: pointer;
   }
-  .form-options a {
-    color: var(--accent);
-    text-decoration: none;
-    font-weight: 500;
-  }
+  .form-options a { color: var(--accent); text-decoration: none; font-weight: 500; }
   .form-options a:hover { text-decoration: underline; }
 
   .btn-submit {
-    width: 100%;
-    padding: 13px;
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    border-radius: 10px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    font-weight: 500;
-    cursor: pointer;
+    width: 100%; padding: 13px; background: var(--accent); color: #fff;
+    border: none; border-radius: 10px; font-family: 'DM Sans', sans-serif;
+    font-size: 15px; font-weight: 500; cursor: pointer;
     transition: background 0.15s, transform 0.1s;
   }
   .btn-submit:hover { background: var(--accent2); }
   .btn-submit:active { transform: scale(0.98); }
+  .btn-submit:disabled { opacity: 0.6; cursor: default; }
 
   .auth-footer {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 14px;
-    color: var(--text2);
+    text-align: center; margin-top: 20px; font-size: 14px; color: var(--text2);
   }
-  .auth-footer a {
-    color: var(--accent);
-    text-decoration: none;
-    font-weight: 500;
-  }
+  .auth-footer a { color: var(--accent); text-decoration: none; font-weight: 500; }
   .auth-footer a:hover { text-decoration: underline; }
 
-  .back-link {
-    display: block;
-    text-align: center;
-    margin-top: 24px;
-    font-size: 13px;
-    color: var(--text3);
-    text-decoration: none;
-  }
-  .back-link:hover { color: var(--text2); }
-
   .error-msg {
-    display: none;
-    background: #fff0f0;
-    border: 1px solid #ffcfcf;
-    color: #c0392b;
-    font-size: 13px;
-    padding: 10px 14px;
-    border-radius: 8px;
-    margin-bottom: 16px;
-    text-align: center;
+    display: none; background: #fff0f0; border: 1px solid #ffcfcf;
+    color: #c0392b; font-size: 13px; padding: 10px 14px;
+    border-radius: 8px; margin-bottom: 16px; text-align: center;
   }
   .error-msg.visible { display: block; }
-  .btn-submit:disabled { opacity: 0.6; cursor: default; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 48px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  footer a { color: var(--text3); text-decoration: none; font-size: 13px; }
+  footer a:hover { color: var(--text1); }
+
+  @media (max-width: 480px) {
+    nav { padding: 0 20px; }
+    footer { padding: 24px 20px; }
+  }
 </style>
 </head>
 <body>
 
-<div class="auth-container">
-  <a class="auth-brand" href="/">
-    <div class="auth-brand-icon">
-      <svg viewBox="0 0 16 16" fill="none"><path d="M3 4h10M3 8h7M3 12h5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><circle cx="13" cy="11" r="2.5" stroke="#fff" stroke-width="1.2"/><path d="M15 13l1.5 1.5" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/></svg>
-    </div>
-    <span class="auth-brand-name">Compra Inteligente</span>
+<nav>
+  <a class="nav-brand" href="/">
+    <img class="nav-logo" src="/logo-192.png" alt="Compra Inteligente" />
+    <span class="nav-name">Compra Inteligente</span>
   </a>
+  <div class="nav-links">
+    <a class="nav-link" href="/pricing">Planos</a>
+    <a class="nav-cta" href="/register">Criar conta</a>
+  </div>
+</nav>
 
-  <div class="auth-card">
-    <h1>Bem-vindo de volta</h1>
-    <p class="subtitle">Entre na sua conta para continuar.</p>
+<div class="auth-wrap">
+  <div class="auth-container">
+    <div class="auth-card">
+      <h1>Bem-vindo de volta</h1>
+      <p class="subtitle">Entre na sua conta para continuar.</p>
 
-    <form onsubmit="handleLogin(event)">
-      <div class="form-group">
-        <label for="email">E-mail</label>
-        <input type="email" id="email" placeholder="seu@email.com" required />
-      </div>
-      <div class="form-group">
-        <label for="password">Senha</label>
-        <input type="password" id="password" placeholder="Digite sua senha" required />
-      </div>
-      <div class="form-options">
-        <label><input type="checkbox" /> Lembrar de mim</label>
-        <a href="#">Esqueceu a senha?</a>
-      </div>
-      <div class="error-msg" id="error-msg"></div>
-      <button type="submit" class="btn-submit" id="btn-submit">Entrar</button>
-    </form>
+      <form onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" placeholder="seu@email.com" required />
+        </div>
+        <div class="form-group">
+          <label for="password">Senha</label>
+          <input type="password" id="password" placeholder="Digite sua senha" required />
+        </div>
+        <div class="form-options">
+          <label><input type="checkbox" /> Lembrar de mim</label>
+          <a href="#">Esqueceu a senha?</a>
+        </div>
+        <div class="error-msg" id="error-msg"></div>
+        <button type="submit" class="btn-submit" id="btn-submit">Entrar</button>
+      </form>
 
-    <div class="auth-footer">
-      Ainda não tem conta? <a href="/register">Criar conta</a>
+      <div class="auth-footer">
+        Ainda não tem conta? <a href="/register">Criar conta</a>
+      </div>
     </div>
   </div>
-
-  <a class="back-link" href="/">&larr; Voltar para o início</a>
 </div>
 
+<footer>
+  <div style="margin-bottom:12px">
+    <div style="font-family:'DM Serif Display',serif;font-size:16px;font-weight:400;color:var(--text2);letter-spacing:0.18em;text-transform:uppercase;text-decoration:underline;text-underline-offset:6px;text-decoration-color:var(--border2)">Thinking Tools</div>
+    <div style="font-size:10px;font-weight:500;color:var(--text3);letter-spacing:0.3em;text-transform:uppercase;margin-top:4px">Studio</div>
+  </div>
+  <div style="font-size:12px;color:var(--text3)">&copy; 2026 <a href="mailto:contato@thinkingtools.io">contato@thinkingtools.io</a></div>
+</footer>
+
 <script>
-// Se já está logado, redireciona
 if (localStorage.getItem('token')) {
   window.location.href = '/app';
 }
