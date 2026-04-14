@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Trial Expirado — Compra Inteligente</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet" />
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{--bg:#f5f4f0;--surface:#fff;--accent:#5b4fff;--accent2:#7c6fff;--text1:#111010;--text2:#6b6a72;--text3:#9b9aa3;--border:#e4e3de;--radius2:18px}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text1);min-height:100vh;display:flex;align-items:center;justify-content:center;-webkit-font-smoothing:antialiased}
+  .container{text-align:center;max-width:480px;padding:24px}
+  .icon-wrap{width:72px;height:72px;background:rgba(91,79,255,0.08);border:1px solid rgba(91,79,255,0.15);border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 28px}
+  .icon-wrap svg{width:32px;height:32px;color:var(--accent)}
+  h1{font-family:'DM Serif Display',serif;font-size:32px;font-weight:400;margin-bottom:12px}
+  h1 em{font-style:italic;color:var(--accent)}
+  p{font-size:16px;color:var(--text2);line-height:1.7;margin-bottom:8px}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius2);padding:32px;margin-top:28px;text-align:left}
+  .price-row{display:flex;align-items:baseline;gap:4px;margin-bottom:4px}
+  .price-lg{font-family:'DM Serif Display',serif;font-size:40px;color:var(--text1)}
+  .price-period{font-size:14px;color:var(--text3)}
+  .features{margin:20px 0;font-size:14px;color:var(--text2);line-height:2}
+  .btn-subscribe{display:block;width:100%;padding:14px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:500;cursor:pointer;transition:background 0.15s}
+  .btn-subscribe:hover{background:var(--accent2)}
+  .btn-subscribe:disabled{opacity:0.6;cursor:default}
+  .alt-link{display:block;margin-top:16px;font-size:13px;color:var(--text3);text-decoration:none}
+  .alt-link:hover{color:var(--text2)}
+  .contact{margin-top:24px;font-size:13px;color:var(--text3)}
+  .contact a{color:var(--accent);text-decoration:none}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="icon-wrap">
+    <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/><path d="M12 7v5l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+  </div>
+  <h1>Seu trial <em>expirou</em></h1>
+  <p>Seu período de teste gratuito de 7 dias terminou. Assine para continuar usando a plataforma.</p>
+
+  <div class="card">
+    <div class="price-row">
+      <span style="font-size:16px;color:var(--text2)">R$</span>
+      <span class="price-lg">800</span>
+      <span class="price-period">/mês</span>
+    </div>
+    <div class="features">
+      Assistente IA ilimitado<br>
+      Geração de RFQ<br>
+      Análise de cotações<br>
+      Estratégia de negociação<br>
+      Histórico de conversas<br>
+      Suporte prioritário
+    </div>
+    <button class="btn-subscribe" id="btn-subscribe" onclick="subscribe()">Assinar agora</button>
+  </div>
+
+  <a class="alt-link" href="#" onclick="logout()">Sair da conta</a>
+  <div class="contact">Dúvidas? <a href="mailto:contato@comprainteligente.tech">contato@comprainteligente.tech</a></div>
+</div>
+
+<script>
+const token = localStorage.getItem('token');
+if (!token) { window.location.href = '/login'; }
+
+async function subscribe() {
+  const btn = document.getElementById('btn-subscribe');
+  btn.disabled = true;
+  btn.textContent = 'Redirecionando...';
+  try {
+    const res = await fetch('/api/payment/create-subscription', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }
+    });
+    const data = await res.json();
+    if (data.init_point) {
+      window.location.href = data.init_point;
+    } else {
+      alert(data.error || 'Erro ao criar assinatura.');
+      btn.disabled = false;
+      btn.textContent = 'Assinar agora';
+    }
+  } catch {
+    alert('Erro de conexão.');
+    btn.disabled = false;
+    btn.textContent = 'Assinar agora';
+  }
+}
+
+function logout() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+  window.location.href = '/login';
+}
+</script>
+</body>
+</html>

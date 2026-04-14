@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Planos e Preços — CompraInteligente</title>
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Serif+Display&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #f5f4f0;
+    --surface:  #ffffff;
+    --accent:   #5b4fff;
+    --accent2:  #7c6fff;
+    --text1:    #111010;
+    --text2:    #6b6a72;
+    --text3:    #9b9aa3;
+    --border:   #e4e3de;
+    --border2:  #d0cfca;
+    --success:  #1a9e6a;
+    --radius:   12px;
+    --radius2:  18px;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text1);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAV ── */
+  nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 48px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .nav-icon {
+    width: 32px; height: 32px;
+    background: var(--accent);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .nav-icon svg { width: 17px; height: 17px; }
+  .nav-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text1);
+    letter-spacing: -0.2px;
+  }
+  .nav-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 20px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+  .nav-cta:hover { background: var(--accent2); }
+
+  /* ── HERO ── */
+  .hero {
+    text-align: center;
+    padding: 80px 24px 60px;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+  .hero-eyebrow {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(91,79,255,0.08);
+    border: 1px solid rgba(91,79,255,0.15);
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.5px;
+    color: var(--text1);
+    margin-bottom: 16px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .hero p {
+    font-size: 17px;
+    color: var(--text2);
+    line-height: 1.65;
+  }
+
+  /* ── CALCULATOR ── */
+  .calc-wrap {
+    max-width: 860px;
+    margin: 0 auto 24px;
+    padding: 0 24px;
+  }
+  .calc-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius2);
+    padding: 32px 36px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 32px;
+  }
+  .calc-label {
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--text3);
+    margin-bottom: 10px;
+  }
+  .calc-slider-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  input[type=range] {
+    flex: 1;
+    height: 4px;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+  .calc-val {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text1);
+    min-width: 36px;
+    text-align: right;
+  }
+  .calc-divider {
+    width: 1px;
+    height: 80px;
+    background: var(--border);
+  }
+  .calc-total-label {
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--text3);
+    margin-bottom: 8px;
+  }
+  .calc-total {
+    font-family: 'DM Serif Display', serif;
+    font-size: 44px;
+    letter-spacing: -1px;
+    color: var(--text1);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .calc-total span {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--text2);
+    letter-spacing: 0;
+  }
+  .calc-breakdown {
+    font-size: 13px;
+    color: var(--text3);
+    line-height: 1.6;
+  }
+
+  /* ── PLAN CARD ── */
+  .plans-wrap {
+    max-width: 860px;
+    margin: 0 auto 80px;
+    padding: 0 24px;
+  }
+  .plan-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius2);
+    padding: 36px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+  .plan-name {
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .plan-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--text1);
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+  .plan-desc {
+    font-size: 15px;
+    color: var(--text2);
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+  .price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    margin-bottom: 4px;
+  }
+  .price-currency {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text2);
+  }
+  .price-amount {
+    font-family: 'DM Serif Display', serif;
+    font-size: 52px;
+    letter-spacing: -2px;
+    color: var(--text1);
+    line-height: 1;
+  }
+  .price-period {
+    font-size: 14px;
+    color: var(--text3);
+  }
+  .price-plus {
+    font-size: 14px;
+    color: var(--text2);
+    margin-bottom: 28px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--border);
+  }
+  .price-plus strong { color: var(--text1); font-weight: 600; }
+
+  .btn-accent {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 14px 24px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .btn-accent:hover { background: var(--accent2); }
+  .btn-accent:active { transform: scale(0.98); }
+
+  .features-title {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--text2);
+    margin-bottom: 16px;
+  }
+  .feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: var(--text1);
+    line-height: 1.5;
+  }
+  .feature-check {
+    width: 18px; height: 18px;
+    background: rgba(26,158,106,0.1);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .feature-check svg { width: 10px; height: 10px; }
+
+  /* ── FAQ ── */
+  .faq-wrap {
+    max-width: 620px;
+    margin: 0 auto 80px;
+    padding: 0 24px;
+  }
+  .faq-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    font-weight: 400;
+    text-align: center;
+    margin-bottom: 36px;
+    color: var(--text1);
+  }
+  .faq-item {
+    border-bottom: 1px solid var(--border);
+    padding: 18px 0;
+  }
+  .faq-q {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text1);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    user-select: none;
+  }
+  .faq-q svg {
+    width: 16px; height: 16px;
+    flex-shrink: 0;
+    color: var(--text3);
+    transition: transform 0.2s;
+  }
+  .faq-a {
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.7;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.25s ease, padding 0.2s;
+  }
+  .faq-item.open .faq-a { max-height: 200px; padding-top: 10px; }
+  .faq-item.open .faq-q svg { transform: rotate(45deg); }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 32px 24px 48px;
+    font-size: 13px;
+    color: var(--text3);
+    border-top: 1px solid var(--border);
+  }
+
+  @media (max-width: 640px) {
+    nav { padding: 0 20px; }
+    .calc-card { grid-template-columns: 1fr; gap: 24px; }
+    .calc-divider { width: 100%; height: 1px; }
+    .plan-card { grid-template-columns: 1fr; gap: 32px; }
+    .hero { padding: 48px 20px 40px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="/">
+    <div class="nav-icon">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M3 4h10M3 8h7M3 12h5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><circle cx="13" cy="11" r="2.5" stroke="#fff" stroke-width="1.2"/><path d="M15 13l1.5 1.5" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/></svg>
+    </div>
+    <span class="nav-name">CompraInteligente</span>
+  </a>
+  <a class="nav-cta" href="/login">Entrar</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">Planos e Preços</div>
+  <h1>Compras mais inteligentes,<br><em>com preço justo</em></h1>
+  <p>Uma plataforma completa com IA para otimizar todo o seu processo de compras corporativas — da cotação à negociação.</p>
+</section>
+
+<!-- CALCULATOR -->
+<div class="calc-wrap">
+  <div class="calc-card">
+    <div>
+      <div class="calc-label">Quantos usuários?</div>
+      <div class="calc-slider-row">
+        <input type="range" min="1" max="50" value="5" id="usr-slider" oninput="calc()" step="1" />
+        <div class="calc-val" id="usr-val">5</div>
+      </div>
+      <div style="font-size:13px;color:var(--text3);margin-top:8px">Arraste para simular o custo</div>
+    </div>
+    <div class="calc-divider"></div>
+    <div>
+      <div class="calc-total-label">Total estimado</div>
+      <div class="calc-total" id="calc-total">R$ <span>900</span></div>
+      <div class="calc-breakdown" id="calc-break">R$ 500 plataforma + R$ 400 (5 usuários)</div>
+    </div>
+  </div>
+</div>
+
+<!-- PLAN -->
+<div class="plans-wrap">
+  <div class="plan-card">
+    <div>
+      <div class="plan-name">Plano Corporativo</div>
+      <div class="plan-title">Tudo que sua equipe de compras precisa</div>
+      <div class="plan-desc">Acesso completo à plataforma com IA para geração de cotações, análise de fornecedores e apoio à negociação.</div>
+
+      <div class="price-row">
+        <span class="price-currency">R$</span>
+        <span class="price-amount">500</span>
+        <span class="price-period">/mês</span>
+      </div>
+      <div class="price-plus">+ <strong>R$ 80</strong> por usuário/mês</div>
+
+      <a class="btn-accent" href="mailto:contato@comprainteligente.tech">
+        Solicitar demonstração
+        <svg viewBox="0 0 16 16" fill="none" width="15" height="15"><path d="M3 8h10M9 4l4 4-4 4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+
+    <div>
+      <div class="features-title">O que está incluído</div>
+
+      <div class="feature-item">
+        <div class="feature-check"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#1a9e6a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span>Assistente IA especialista em procurement</span>
+      </div>
+      <div class="feature-item">
+        <div class="feature-check"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#1a9e6a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span>Geração automática de RFQ (Requisição de Cotação)</span>
+      </div>
+      <div class="feature-item">
+        <div class="feature-check"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#1a9e6a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span>Análise comparativa de cotações com recomendação</span>
+      </div>
+      <div class="feature-item">
+        <div class="feature-check"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#1a9e6a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span>Estratégia e script de negociação com BATNA</span>
+      </div>
+      <div class="feature-item">
+        <div class="feature-check"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#1a9e6a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span>Acesso web — sem instalação</span>
+      </div>
+      <div class="feature-item">
+        <div class="feature-check"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#1a9e6a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span>Suporte por e-mail e WhatsApp</span>
+      </div>
+      <div class="feature-item">
+        <div class="feature-check"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#1a9e6a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span>Atualizações contínuas da plataforma</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="faq-wrap">
+  <div class="faq-title">Perguntas frequentes</div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">
+      O que é considerado um usuário?
+      <svg viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </div>
+    <div class="faq-a">Cada pessoa que acessa a plataforma é contabilizada como um usuário. Podem ser compradores, analistas de suprimentos, gestores — qualquer colaborador que utilize o sistema no mês.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">
+      Posso adicionar ou remover usuários a qualquer momento?
+      <svg viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </div>
+    <div class="faq-a">Sim. O valor é ajustado no mês seguinte conforme o número de usuários ativos. Você paga apenas pelos usuários que realmente utilizaram a plataforma no período.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">
+      Há limite de uso por usuário?
+      <svg viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </div>
+    <div class="faq-a">Não. O plano é de uso ilimitado — cada usuário pode gerar quantas cotações, análises e estratégias de negociação precisar durante o mês.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">
+      Como funciona o contrato?
+      <svg viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </div>
+    <div class="faq-a">Contrato mensal sem fidelidade. Você pode cancelar a qualquer momento com 30 dias de antecedência. Também oferecemos desconto para contratos anuais — entre em contato para saber mais.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">
+      Os dados da empresa ficam seguros?
+      <svg viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </div>
+    <div class="faq-a">Sim. A plataforma pode ser hospedada em servidor dedicado para sua empresa, garantindo que nenhum dado de fornecedores, cotações ou negociações seja compartilhado com terceiros.</div>
+  </div>
+</div>
+
+<footer>
+  © 2025 CompraInteligente · <a href="mailto:contato@comprainteligente.tech" style="color:var(--text3)">contato@comprainteligente.tech</a>
+</footer>
+
+<script>
+function calc() {
+  const u = parseInt(document.getElementById('usr-slider').value);
+  document.getElementById('usr-val').textContent = u;
+  const total = 500 + (u * 80);
+  document.getElementById('calc-total').innerHTML = 'R$ <span>' + total.toLocaleString('pt-BR') + '</span>';
+  document.getElementById('calc-break').textContent = 'R$ 500 plataforma + R$ ' + (u * 80).toLocaleString('pt-BR') + ' (' + u + ' usuário' + (u > 1 ? 's' : '') + ')';
+}
+
+function toggleFaq(el) {
+  const item = el.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+</script>
+</body>
+</html>

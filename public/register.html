@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Criar conta — Compra Inteligente</title>
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #f5f4f0;
+    --surface:  #ffffff;
+    --accent:   #5b4fff;
+    --accent2:  #7c6fff;
+    --text1:    #111010;
+    --text2:    #6b6a72;
+    --text3:    #9b9aa3;
+    --border:   #e4e3de;
+    --border2:  #d0cfca;
+    --radius:   12px;
+    --radius2:  18px;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text1);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .auth-container {
+    width: 100%;
+    max-width: 420px;
+    padding: 24px;
+  }
+
+  .auth-brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 40px;
+    text-decoration: none;
+  }
+  .auth-brand-icon {
+    width: 36px; height: 36px;
+    background: var(--accent);
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .auth-brand-icon svg { width: 18px; height: 18px; }
+  .auth-brand-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text1);
+    letter-spacing: -0.3px;
+  }
+
+  .auth-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius2);
+    padding: 36px;
+  }
+
+  .auth-card h1 {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text1);
+    margin-bottom: 6px;
+    letter-spacing: -0.3px;
+  }
+  .auth-card .subtitle {
+    font-size: 14px;
+    color: var(--text2);
+    margin-bottom: 28px;
+  }
+
+  .form-group {
+    margin-bottom: 18px;
+  }
+  .form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text2);
+    margin-bottom: 6px;
+  }
+  .form-group input {
+    width: 100%;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text1);
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    border-radius: 10px;
+    padding: 12px 14px;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .form-group input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(91,79,255,0.1);
+    background: var(--surface);
+  }
+  .form-group input::placeholder { color: var(--text3); }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .btn-submit {
+    width: 100%;
+    padding: 13px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    margin-top: 6px;
+  }
+  .btn-submit:hover { background: var(--accent2); }
+  .btn-submit:active { transform: scale(0.98); }
+
+  .terms {
+    font-size: 12px;
+    color: var(--text3);
+    text-align: center;
+    margin-top: 16px;
+    line-height: 1.6;
+  }
+  .terms a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .terms a:hover { text-decoration: underline; }
+
+  .auth-footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+    color: var(--text2);
+  }
+  .auth-footer a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .auth-footer a:hover { text-decoration: underline; }
+
+  .back-link {
+    display: block;
+    text-align: center;
+    margin-top: 24px;
+    font-size: 13px;
+    color: var(--text3);
+    text-decoration: none;
+  }
+  .back-link:hover { color: var(--text2); }
+
+  .error-msg {
+    display: none;
+    background: #fff0f0;
+    border: 1px solid #ffcfcf;
+    color: #c0392b;
+    font-size: 13px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  .error-msg.visible { display: block; }
+  .btn-submit:disabled { opacity: 0.6; cursor: default; }
+
+  @media (max-width: 480px) {
+    .form-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="auth-container">
+  <a class="auth-brand" href="/">
+    <div class="auth-brand-icon">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M3 4h10M3 8h7M3 12h5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><circle cx="13" cy="11" r="2.5" stroke="#fff" stroke-width="1.2"/><path d="M15 13l1.5 1.5" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/></svg>
+    </div>
+    <span class="auth-brand-name">Compra Inteligente</span>
+  </a>
+
+  <div class="auth-card">
+    <h1>Crie sua conta</h1>
+    <p class="subtitle">Comece a usar a IA para compras corporativas.</p>
+
+    <form onsubmit="handleRegister(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="nome">Nome</label>
+          <input type="text" id="nome" placeholder="Seu nome" required />
+        </div>
+        <div class="form-group">
+          <label for="sobrenome">Sobrenome</label>
+          <input type="text" id="sobrenome" placeholder="Seu sobrenome" required />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="empresa">Empresa</label>
+        <input type="text" id="empresa" placeholder="Nome da empresa" />
+      </div>
+      <div class="form-group">
+        <label for="email">E-mail corporativo</label>
+        <input type="email" id="email" placeholder="seu@empresa.com" required />
+      </div>
+      <div class="form-group">
+        <label for="password">Senha</label>
+        <input type="password" id="password" placeholder="Mínimo 8 caracteres" required minlength="8" />
+      </div>
+      <div class="error-msg" id="error-msg"></div>
+      <button type="submit" class="btn-submit" id="btn-submit">Criar conta</button>
+      <div class="terms">Ao criar sua conta, você concorda com os<br><a href="#">Termos de Uso</a> e <a href="#">Política de Privacidade</a>.</div>
+    </form>
+
+    <div class="auth-footer">
+      Já tem uma conta? <a href="/login">Entrar</a>
+    </div>
+  </div>
+
+  <a class="back-link" href="/">&larr; Voltar para o início</a>
+</div>
+
+<script>
+if (localStorage.getItem('token')) {
+  window.location.href = '/app';
+}
+
+async function handleRegister(e) {
+  e.preventDefault();
+  const btn = document.getElementById('btn-submit');
+  const errEl = document.getElementById('error-msg');
+  errEl.classList.remove('visible');
+  btn.disabled = true;
+  btn.textContent = 'Criando conta...';
+
+  const nome = document.getElementById('nome').value.trim();
+  const sobrenome = document.getElementById('sobrenome').value.trim();
+
+  try {
+    const res = await fetch('/api/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: nome + ' ' + sobrenome,
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value,
+        company: document.getElementById('empresa').value
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      errEl.textContent = data.error || 'Erro ao criar conta.';
+      errEl.classList.add('visible');
+      btn.disabled = false;
+      btn.textContent = 'Criar conta';
+      return;
+    }
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('user', JSON.stringify(data.user));
+    window.location.href = '/app';
+  } catch {
+    errEl.textContent = 'Erro de conexão. Tente novamente.';
+    errEl.classList.add('visible');
+    btn.disabled = false;
+    btn.textContent = 'Criar conta';
+  }
+}
+</script>
+
+</body>
+</html>

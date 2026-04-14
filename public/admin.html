@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin — Compra Inteligente</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{--bg:#f5f4f0;--surface:#fff;--accent:#5b4fff;--accent2:#7c6fff;--text1:#111010;--text2:#6b6a72;--text3:#9b9aa3;--border:#e4e3de;--border2:#d0cfca;--success:#1a9e6a;--warning:#c87a14;--danger:#e74c3c;--radius:10px;--radius2:14px}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text1);min-height:100vh;-webkit-font-smoothing:antialiased}
+  nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 32px;height:58px;display:flex;align-items:center;justify-content:space-between}
+  .nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+  .nav-icon{width:32px;height:32px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center}
+  .nav-icon svg{width:16px;height:16px}
+  .nav-name{font-size:15px;font-weight:600;color:var(--text1)}
+  .nav-badge{font-size:11px;font-weight:500;padding:4px 10px;border-radius:20px;background:rgba(231,76,60,0.1);color:var(--danger);border:1px solid rgba(231,76,60,0.2)}
+  .nav-links{display:flex;gap:12px;align-items:center}
+  .nav-link{font-size:13px;color:var(--text2);text-decoration:none;padding:6px 12px;border-radius:6px}
+  .nav-link:hover{background:rgba(91,79,255,0.06);color:var(--text1)}
+  .container{max-width:1100px;margin:0 auto;padding:32px 24px}
+  h1{font-size:22px;font-weight:600;margin-bottom:4px}
+  .subtitle{font-size:14px;color:var(--text2);margin-bottom:28px}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+  .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius2);padding:20px}
+  .stat-label{font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px}
+  .stat-value{font-size:28px;font-weight:600;color:var(--text1)}
+  .table-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius2);overflow:hidden}
+  .table-header{padding:16px 20px;border-bottom:1px solid var(--border);font-size:13px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.06em}
+  table{width:100%;border-collapse:collapse}
+  th{text-align:left;padding:12px 16px;font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;border-bottom:1px solid var(--border)}
+  td{padding:12px 16px;font-size:13px;color:var(--text1);border-bottom:1px solid var(--border)}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:rgba(91,79,255,0.02)}
+  .badge{display:inline-block;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500}
+  .badge-trial{background:rgba(200,122,20,0.1);color:var(--warning)}
+  .badge-active{background:rgba(26,158,106,0.1);color:var(--success)}
+  .badge-cancelled{background:rgba(231,76,60,0.1);color:var(--danger)}
+  .badge-admin{background:rgba(91,79,255,0.1);color:var(--accent)}
+  .badge-expired{background:rgba(155,154,163,0.15);color:var(--text3)}
+  .btn-sm{padding:5px 10px;border:1px solid var(--border2);border-radius:6px;background:var(--surface);font-family:'DM Sans',sans-serif;font-size:11px;cursor:pointer;color:var(--text2);transition:all 0.15s}
+  .btn-sm:hover{border-color:var(--accent);color:var(--accent)}
+  .btn-sm.danger:hover{border-color:var(--danger);color:var(--danger)}
+  .btn-sm.success:hover{border-color:var(--success);color:var(--success)}
+  .actions{display:flex;gap:6px}
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:100;align-items:center;justify-content:center}
+  .modal-overlay.visible{display:flex}
+  .modal{background:var(--surface);border-radius:var(--radius2);padding:28px;width:360px;box-shadow:0 20px 60px rgba(0,0,0,0.15)}
+  .modal h3{font-size:16px;font-weight:600;margin-bottom:16px}
+  .modal input{width:100%;padding:10px 12px;border:1px solid var(--border2);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;margin-bottom:16px}
+  .modal input:focus{border-color:var(--accent)}
+  .modal-btns{display:flex;gap:8px;justify-content:flex-end}
+  .modal-btns button{padding:8px 16px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;border:none}
+  .modal-btns .cancel{background:var(--bg);color:var(--text2)}
+  .modal-btns .confirm{background:var(--accent);color:#fff}
+  @media(max-width:768px){.stats{grid-template-columns:repeat(2,1fr)}.table-card{overflow-x:auto}}
+</style>
+</head>
+<body>
+<nav>
+  <div style="display:flex;align-items:center;gap:16px">
+    <a class="nav-brand" href="/"><div class="nav-icon"><svg viewBox="0 0 16 16" fill="none"><path d="M3 4h10M3 8h7M3 12h5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><circle cx="13" cy="11" r="2.5" stroke="#fff" stroke-width="1.2"/><path d="M15 13l1.5 1.5" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/></svg></div><span class="nav-name">Compra Inteligente</span></a>
+    <span class="nav-badge">Admin</span>
+  </div>
+  <div class="nav-links">
+    <a class="nav-link" href="/app">Voltar ao app</a>
+    <a class="nav-link" href="#" onclick="logout()">Sair</a>
+  </div>
+</nav>
+
+<div class="container">
+  <h1>Painel Administrativo</h1>
+  <p class="subtitle">Gerencie usuários, planos e assinaturas.</p>
+
+  <div class="stats">
+    <div class="stat-card"><div class="stat-label">Total de usuários</div><div class="stat-value" id="stat-total">-</div></div>
+    <div class="stat-card"><div class="stat-label">Em trial</div><div class="stat-value" id="stat-trial">-</div></div>
+    <div class="stat-card"><div class="stat-label">Ativos (pagos)</div><div class="stat-value" id="stat-active">-</div></div>
+    <div class="stat-card"><div class="stat-label">Cancelados</div><div class="stat-value" id="stat-cancelled">-</div></div>
+  </div>
+
+  <div class="table-card">
+    <div class="table-header">Usuários cadastrados</div>
+    <table>
+      <thead><tr><th>Nome</th><th>E-mail</th><th>Empresa</th><th>Plano</th><th>Trial até</th><th>Cadastro</th><th>Ações</th></tr></thead>
+      <tbody id="users-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-extend">
+  <div class="modal">
+    <h3>Estender trial</h3>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:12px" id="modal-user-name"></p>
+    <input type="number" id="extend-days" value="7" min="1" max="365" placeholder="Número de dias" />
+    <div class="modal-btns">
+      <button class="cancel" onclick="closeModal()">Cancelar</button>
+      <button class="confirm" onclick="confirmExtend()">Estender</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const token = localStorage.getItem('token');
+if (!token) { window.location.href = '/login'; }
+
+let extendUserId = null;
+
+async function apiFetch(url, opts) {
+  const res = await fetch(url, { ...opts, headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token, ...(opts?.headers || {}) } });
+  if (res.status === 401) { logout(); return; }
+  if (res.status === 403) { alert('Acesso negado. Você não é administrador.'); window.location.href = '/app'; return; }
+  return res.json();
+}
+
+function logout() { localStorage.removeItem('token'); localStorage.removeItem('user'); window.location.href = '/login'; }
+
+function formatDate(d) { if (!d) return '-'; return new Date(d).toLocaleDateString('pt-BR'); }
+
+function getPlanBadge(user) {
+  if (user.role === 'admin') return '<span class="badge badge-admin">Admin</span>';
+  if (user.plan === 'active') return '<span class="badge badge-active">Ativo</span>';
+  if (user.plan === 'cancelled') return '<span class="badge badge-cancelled">Cancelado</span>';
+  if (user.plan === 'trial') {
+    const expired = user.trial_ends_at && new Date(user.trial_ends_at) < new Date();
+    return expired ? '<span class="badge badge-expired">Trial expirado</span>' : '<span class="badge badge-trial">Trial</span>';
+  }
+  return '<span class="badge">' + user.plan + '</span>';
+}
+
+function getTrialInfo(user) {
+  if (!user.trial_ends_at) return '-';
+  const end = new Date(user.trial_ends_at);
+  const days = Math.ceil((end - new Date()) / (1000*60*60*24));
+  const dateStr = formatDate(user.trial_ends_at);
+  if (days > 0) return dateStr + ' (' + days + 'd)';
+  return dateStr + ' (expirado)';
+}
+
+async function loadUsers() {
+  const data = await apiFetch('/api/admin/users');
+  if (!data) return;
+  const users = data.users;
+
+  document.getElementById('stat-total').textContent = users.length;
+  document.getElementById('stat-trial').textContent = users.filter(u => u.plan === 'trial').length;
+  document.getElementById('stat-active').textContent = users.filter(u => u.plan === 'active').length;
+  document.getElementById('stat-cancelled').textContent = users.filter(u => u.plan === 'cancelled').length;
+
+  const tbody = document.getElementById('users-tbody');
+  tbody.innerHTML = '';
+  users.forEach(u => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = '<td>' + u.name + '</td><td>' + u.email + '</td><td>' + (u.company || '-') + '</td><td>' + getPlanBadge(u) + '</td><td style="font-size:12px">' + getTrialInfo(u) + '</td><td style="font-size:12px">' + formatDate(u.created_at) + '</td><td><div class="actions">' +
+      (u.role !== 'admin' ? '<button class="btn-sm" onclick="openExtend(' + u.id + ',\'' + u.name + '\')">+Trial</button>' +
+      (u.plan !== 'active' ? '<button class="btn-sm success" onclick="activateUser(' + u.id + ')">Ativar</button>' : '') +
+      (u.plan !== 'cancelled' ? '<button class="btn-sm danger" onclick="deactivateUser(' + u.id + ')">Desativar</button>' : '') : '') +
+      '</div></td>';
+    tbody.appendChild(tr);
+  });
+}
+
+function openExtend(id, name) { extendUserId = id; document.getElementById('modal-user-name').textContent = 'Usuário: ' + name; document.getElementById('modal-extend').classList.add('visible'); }
+function closeModal() { document.getElementById('modal-extend').classList.remove('visible'); extendUserId = null; }
+
+async function confirmExtend() {
+  const days = parseInt(document.getElementById('extend-days').value) || 7;
+  await apiFetch('/api/admin/users/' + extendUserId + '/extend-trial', { method: 'POST', body: JSON.stringify({ days }) });
+  closeModal();
+  loadUsers();
+}
+
+async function activateUser(id) { await apiFetch('/api/admin/users/' + id + '/activate', { method: 'POST' }); loadUsers(); }
+async function deactivateUser(id) { if (!confirm('Desativar este usuário?')) return; await apiFetch('/api/admin/users/' + id + '/deactivate', { method: 'POST' }); loadUsers(); }
+
+loadUsers();
+</script>
+</body>
+</html>

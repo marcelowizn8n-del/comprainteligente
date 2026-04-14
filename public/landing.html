@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Compra Inteligente — IA para Compras Corporativas</title>
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link rel="apple-touch-icon" href="/logo-192.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Serif+Display&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #f5f4f0;
+    --surface:  #ffffff;
+    --accent:   #5b4fff;
+    --accent2:  #7c6fff;
+    --accent-bg: rgba(91,79,255,0.06);
+    --text1:    #111010;
+    --text2:    #6b6a72;
+    --text3:    #9b9aa3;
+    --border:   #e4e3de;
+    --border2:  #d0cfca;
+    --success:  #1a9e6a;
+    --radius:   12px;
+    --radius2:  18px;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text1);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAV ── */
+  nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 48px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .nav-icon {
+    width: 34px; height: 34px;
+    background: var(--accent);
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .nav-icon svg { width: 18px; height: 18px; }
+  .nav-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text1);
+    letter-spacing: -0.3px;
+  }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .nav-link {
+    padding: 9px 18px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text2);
+    text-decoration: none;
+    border-radius: 9px;
+    transition: all 0.15s;
+  }
+  .nav-link:hover { color: var(--text1); background: var(--accent-bg); }
+  .nav-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 20px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+  .nav-cta:hover { background: var(--accent2); }
+
+  /* ── HERO ── */
+  .hero {
+    text-align: center;
+    padding: 100px 24px 80px;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .hero-eyebrow {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(91,79,255,0.08);
+    border: 1px solid rgba(91,79,255,0.15);
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 28px;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(36px, 5.5vw, 56px);
+    font-weight: 400;
+    line-height: 1.12;
+    letter-spacing: -0.5px;
+    color: var(--text1);
+    margin-bottom: 20px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .hero p {
+    font-size: 18px;
+    color: var(--text2);
+    line-height: 1.7;
+    max-width: 540px;
+    margin: 0 auto 36px;
+  }
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .btn-primary:hover { background: var(--accent2); }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    background: var(--surface);
+    color: var(--text1);
+    border: 1px solid var(--border2);
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .btn-secondary:hover { border-color: var(--accent); background: var(--accent-bg); }
+
+  /* ── FEATURES ── */
+  .features {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+  .features-header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .features-header h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 32px;
+    font-weight: 400;
+    color: var(--text1);
+    margin-bottom: 10px;
+  }
+  .features-header p {
+    font-size: 16px;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  .feature-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius2);
+    padding: 28px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .feature-card:hover {
+    border-color: rgba(91,79,255,0.3);
+    box-shadow: 0 4px 24px rgba(91,79,255,0.06);
+  }
+  .feature-icon {
+    width: 44px; height: 44px;
+    background: var(--accent-bg);
+    border: 1px solid rgba(91,79,255,0.12);
+    border-radius: 11px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 18px;
+  }
+  .feature-icon svg { width: 20px; height: 20px; color: var(--accent); }
+  .feature-card h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text1);
+    margin-bottom: 8px;
+    letter-spacing: -0.2px;
+  }
+  .feature-card p {
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.65;
+  }
+
+  /* ── STEPS ── */
+  .steps {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+  .steps-header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .steps-header h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 32px;
+    font-weight: 400;
+    color: var(--text1);
+    margin-bottom: 10px;
+  }
+  .steps-header p {
+    font-size: 16px;
+    color: var(--text2);
+  }
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .step-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius2);
+    padding: 28px;
+    text-align: center;
+  }
+  .step-num {
+    width: 40px; height: 40px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 auto 16px;
+  }
+  .step-card h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text1);
+    margin-bottom: 8px;
+  }
+  .step-card p {
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+
+  /* ── CTA FINAL ── */
+  .cta-section {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+    text-align: center;
+  }
+  .cta-card {
+    background: #16151a;
+    border-radius: var(--radius2);
+    padding: 56px 40px;
+  }
+  .cta-card h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 30px;
+    font-weight: 400;
+    color: #ffffff;
+    margin-bottom: 12px;
+  }
+  .cta-card p {
+    font-size: 16px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+  .cta-card .btn-primary {
+    padding: 14px 32px;
+    font-size: 16px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--text3);
+  }
+  footer a {
+    color: var(--text3);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  footer a:hover { color: var(--text1); }
+  .footer-links {
+    display: flex;
+    gap: 24px;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 0 20px; }
+    .hero { padding: 60px 20px 50px; }
+    .features-grid { grid-template-columns: 1fr; }
+    .steps-grid { grid-template-columns: 1fr; }
+    .cta-card { padding: 40px 24px; }
+    footer { flex-direction: column; gap: 12px; text-align: center; }
+  }
+  @media (max-width: 480px) {
+    .hero-actions { flex-direction: column; }
+    .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="/">
+    <div class="nav-icon">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M3 4h10M3 8h7M3 12h5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><circle cx="13" cy="11" r="2.5" stroke="#fff" stroke-width="1.2"/><path d="M15 13l1.5 1.5" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/></svg>
+    </div>
+    <span class="nav-name">Compra Inteligente</span>
+  </a>
+  <div class="nav-links">
+    <a class="nav-link" href="/pricing">Planos</a>
+    <a class="nav-link" href="/login">Entrar</a>
+    <a class="nav-cta" href="/register">Criar conta</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">Plataforma com IA</div>
+  <h1>Compras corporativas<br>mais <em>inteligentes</em></h1>
+  <p>Automatize cotações, analise fornecedores e negocie melhor com inteligência artificial especializada em procurement.</p>
+  <div class="hero-actions">
+    <a class="btn-primary" href="/register">
+      Comece agora
+      <svg viewBox="0 0 16 16" fill="none" width="15" height="15"><path d="M3 8h10M9 4l4 4-4 4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <a class="btn-secondary" href="/pricing">Ver planos e preços</a>
+  </div>
+</section>
+
+<section class="features">
+  <div class="features-header">
+    <h2>Tudo que sua equipe de compras precisa</h2>
+    <p>Quatro ferramentas com IA para otimizar cada etapa do processo de compras.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 20 20" fill="none"><path d="M10 3a7 7 0 100 14 7 7 0 000-14z" stroke="currentColor" stroke-width="1.5"/><path d="M10 7v3l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h3>Assistente IA</h3>
+      <p>Chat com especialista virtual em procurement. Tire dúvidas sobre sourcing, contratos, compliance, TCO e estratégia de compras.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 20 20" fill="none"><rect x="3" y="3" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M7 8h6M7 11h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <h3>Geração de RFQ</h3>
+      <p>Crie Requisições de Cotação profissionais em segundos. Documentos completos e prontos para enviar aos fornecedores.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 20 20" fill="none"><path d="M3 15l4-5 3 3 3-4 4 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 3v14h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <h3>Análise de Cotações</h3>
+      <p>Compare propostas de fornecedores automaticamente. Receba análise de TCO, pontos fortes e fracos, e recomendação fundamentada.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 20 20" fill="none"><path d="M6 10h8M10 6l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/></svg>
+      </div>
+      <h3>Apoio à Negociação</h3>
+      <p>Receba estratégia completa com BATNA, argumentos, concessões e script de abordagem para negociar com confiança.</p>
+    </div>
+  </div>
+</section>
+
+<section class="steps">
+  <div class="steps-header">
+    <h2>Como funciona</h2>
+    <p>Três passos para transformar seu processo de compras.</p>
+  </div>
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <h3>Crie sua conta</h3>
+      <p>Cadastro rápido e sem burocracia. Comece a usar a plataforma em minutos.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <h3>Descreva sua necessidade</h3>
+      <p>Informe o que precisa comprar e a IA gera cotações, análises e estratégias automaticamente.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <h3>Tome decisões melhores</h3>
+      <p>Use as recomendações da IA para negociar melhor, economizar e mitigar riscos.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="cta-card">
+    <h2>Pronto para comprar melhor?</h2>
+    <p>Comece a usar a IA a favor do seu departamento de compras.</p>
+    <a class="btn-primary" href="/register">
+      Criar conta gratuita
+      <svg viewBox="0 0 16 16" fill="none" width="15" height="15"><path d="M3 8h10M9 4l4 4-4 4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <span>&copy; 2025 Compra Inteligente</span>
+  <div class="footer-links">
+    <a href="/pricing">Planos</a>
+    <a href="mailto:contato@comprainteligente.tech">Contato</a>
+    <a href="/login">Entrar</a>
+  </div>
+</footer>
+
+</body>
+</html>

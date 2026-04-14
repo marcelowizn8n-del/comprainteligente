@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Compra Inteligente</title>
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link rel="apple-touch-icon" href="/logo-192.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #f4f3ef;
+    --surface:  #ffffff;
+    --sidebar:  #16151a;
+    --sidebar2: #1e1d23;
+    --accent:   #5b4fff;
+    --accent2:  #7c6fff;
+    --text1:    #111010;
+    --text2:    #6b6a72;
+    --text3:    #9b9aa3;
+    --border:   #e4e3de;
+    --border2:  #d0cfca;
+    --success:  #1a9e6a;
+    --warning:  #c87a14;
+    --radius:   10px;
+    --radius2:  14px;
+    --fs-xs:    11px;
+    --fs-sm:    13px;
+    --fs-base:  14px;
+    --fs-md:    15px;
+    --fs-lg:    18px;
+    --fs-xl:    22px;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text1);
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    font-size: var(--fs-base);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── SIDEBAR ── */
+  aside {
+    width: 220px;
+    background: var(--sidebar);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    padding: 0;
+  }
+
+  .brand {
+    padding: 24px 20px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+  .brand-icon {
+    width: 30px; height: 30px;
+    background: var(--accent);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .brand-icon svg { width: 16px; height: 16px; }
+  .brand-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #ffffff;
+    letter-spacing: -0.2px;
+  }
+  .brand-sub {
+    font-size: var(--fs-xs);
+    color: rgba(255,255,255,0.3);
+    margin-top: 2px;
+    margin-left: 39px;
+  }
+
+  .nav-section {
+    padding: 16px 10px 8px;
+    flex: 1;
+  }
+  .nav-label {
+    font-size: 10px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.25);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0 10px;
+    margin-bottom: 6px;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: rgba(255,255,255,0.45);
+    font-size: var(--fs-sm);
+    font-weight: 400;
+    transition: all 0.15s;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+  }
+  .nav-item:hover {
+    background: rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.8);
+  }
+  .nav-item.active {
+    background: rgba(91,79,255,0.18);
+    color: #ffffff;
+    font-weight: 500;
+  }
+  .nav-item.active .nav-dot { background: var(--accent2); }
+  .nav-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    flex-shrink: 0;
+    transition: background 0.15s;
+  }
+  .nav-item:hover .nav-dot { background: rgba(255,255,255,0.4); }
+
+  .sidebar-footer {
+    padding: 14px 20px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .sidebar-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: var(--fs-xs);
+    color: rgba(255,255,255,0.25);
+  }
+  .badge-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--success);
+  }
+
+  /* ── CONVERSATIONS LIST ── */
+  .conv-section {
+    padding: 8px 10px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
+  }
+  .conv-section::-webkit-scrollbar { width: 3px; }
+  .conv-section::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+  .conv-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    margin-bottom: 6px;
+  }
+  .conv-header .nav-label { margin-bottom: 0; }
+  .new-conv-btn {
+    width: 22px; height: 22px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: none;
+    color: rgba(255,255,255,0.4);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.15s;
+  }
+  .new-conv-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+  .conv-item {
+    display: block;
+    width: 100%;
+    padding: 7px 10px;
+    border-radius: 6px;
+    border: none;
+    background: none;
+    color: rgba(255,255,255,0.35);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 2px;
+  }
+  .conv-item:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.7); }
+  .conv-item.active { background: rgba(91,79,255,0.15); color: #fff; }
+
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .user-avatar {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 600; color: #fff;
+    flex-shrink: 0;
+  }
+  .user-name {
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .help-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+    padding: 7px 10px;
+    border-radius: 6px;
+    border: none;
+    background: none;
+    color: rgba(255,255,255,0.35);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-bottom: 2px;
+  }
+  .help-link:hover { color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.06); }
+  .help-link svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  .logout-btn {
+    display: block;
+    width: 100%;
+    padding: 7px 10px;
+    border-radius: 6px;
+    border: none;
+    background: none;
+    color: rgba(255,255,255,0.25);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .logout-btn:hover { color: #ff6b6b; background: rgba(255,107,107,0.1); }
+
+  /* ── MAIN ── */
+  main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-width: 0;
+  }
+
+  .topbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .topbar-title {
+    font-size: var(--fs-md);
+    font-weight: 600;
+    color: var(--text1);
+    letter-spacing: -0.2px;
+  }
+  .topbar-sub {
+    font-size: var(--fs-sm);
+    color: var(--text3);
+    margin-top: 1px;
+  }
+  .topbar-badge {
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: rgba(91,79,255,0.1);
+    color: var(--accent);
+    border: 1px solid rgba(91,79,255,0.2);
+  }
+
+  .content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 32px;
+  }
+
+  /* ── PANELS ── */
+  .panel { display: none; }
+  .panel.active { display: flex; flex-direction: column; height: 100%; }
+
+  /* ── CHAT ── */
+  .chat-wrap {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+  }
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 4px;
+    margin-bottom: 20px;
+    scroll-behavior: smooth;
+  }
+  .chat-messages::-webkit-scrollbar { width: 4px; }
+  .chat-messages::-webkit-scrollbar-track { background: transparent; }
+  .chat-messages::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+
+  .msg-row {
+    display: flex;
+    margin-bottom: 16px;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .msg-row.user { flex-direction: row-reverse; }
+
+  .msg-avatar {
+    width: 30px; height: 30px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 600;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .msg-avatar.ai {
+    background: linear-gradient(135deg, #5b4fff, #8b7fff);
+    color: #fff;
+  }
+  .msg-avatar.user {
+    background: var(--text1);
+    color: #fff;
+  }
+
+  .msg-bubble {
+    max-width: 72%;
+    padding: 12px 16px;
+    border-radius: 14px;
+    font-size: var(--fs-base);
+    line-height: 1.65;
+  }
+  .msg-row.ai .msg-bubble {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top-left-radius: 4px;
+    color: var(--text1);
+  }
+  .msg-row.user .msg-bubble {
+    background: var(--accent);
+    color: #fff;
+    border-bottom-right-radius: 4px;
+  }
+  .msg-bubble strong { font-weight: 600; }
+  .msg-bubble br + br { display: block; content: ''; margin-top: 4px; }
+
+  .typing-dot {
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--text3);
+    margin: 0 2px;
+    animation: blink 1.2s infinite;
+  }
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes blink { 0%,80%,100% { opacity: 0.2; } 40% { opacity: 1; } }
+
+  .chat-input-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius2);
+    display: flex;
+    align-items: flex-end;
+    gap: 0;
+    padding: 4px 4px 4px 16px;
+    transition: border-color 0.15s;
+  }
+  .chat-input-wrap:focus-within { border-color: var(--accent); }
+  .chat-input-wrap textarea {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: var(--fs-base);
+    color: var(--text1);
+    resize: none;
+    padding: 10px 0;
+    max-height: 140px;
+    line-height: 1.55;
+  }
+  .chat-input-wrap textarea::placeholder { color: var(--text3); }
+  .send-btn {
+    width: 38px; height: 38px;
+    border-radius: 9px;
+    background: var(--accent);
+    border: none;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.15s, transform 0.1s;
+    align-self: flex-end;
+    margin-bottom: 1px;
+  }
+  .send-btn:hover { background: var(--accent2); }
+  .send-btn:active { transform: scale(0.95); }
+  .send-btn svg { width: 16px; height: 16px; }
+
+  /* ── FORMS ── */
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group.full { grid-column: 1 / -1; }
+  label {
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  input, textarea, select {
+    font-family: 'DM Sans', sans-serif;
+    font-size: var(--fs-base);
+    color: var(--text1);
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    padding: 10px 14px;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    width: 100%;
+  }
+  input:focus, textarea:focus, select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(91,79,255,0.1);
+  }
+  textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
+  select { appearance: none; cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b6a72' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px;
+  }
+
+  .section-title {
+    font-size: var(--fs-lg);
+    font-weight: 600;
+    color: var(--text1);
+    letter-spacing: -0.3px;
+  }
+  .section-sub {
+    font-size: var(--fs-sm);
+    color: var(--text2);
+    margin-top: 4px;
+    margin-bottom: 28px;
+    line-height: 1.5;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius2);
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+  .card-title {
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .supplier-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+  .supplier-num {
+    width: 24px; height: 24px;
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text2);
+    flex-shrink: 0;
+  }
+
+  /* ── RESULT AREA ── */
+  .result-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius2);
+    padding: 24px 28px;
+    margin-top: 24px;
+    font-size: var(--fs-base);
+    line-height: 1.75;
+    color: var(--text1);
+    white-space: pre-wrap;
+    font-family: 'DM Sans', sans-serif;
+    display: none;
+  }
+  .result-box.visible { display: block; }
+  .result-box strong { font-weight: 600; }
+  .result-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .result-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--success);
+    flex-shrink: 0;
+  }
+
+  /* ── BUTTON ── */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 22px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    font-family: 'DM Sans', sans-serif;
+    font-size: var(--fs-base);
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    margin-top: 20px;
+  }
+  .btn-primary:hover { background: var(--accent2); }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-primary:disabled { opacity: 0.5; cursor: default; transform: none; }
+  .btn-primary svg { width: 15px; height: 15px; }
+
+  .spinner {
+    width: 14px; height: 14px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── SCROLL ── */
+  .content::-webkit-scrollbar { width: 4px; }
+  .content::-webkit-scrollbar-track { background: transparent; }
+  .content::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+
+  .trial-banner {
+    display: none;
+    background: rgba(200,122,20,0.08);
+    border: 1px solid rgba(200,122,20,0.2);
+    color: var(--warning);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 16px;
+    text-align: center;
+  }
+  .trial-banner a {
+    color: var(--accent);
+    font-weight: 600;
+    text-decoration: none;
+    margin-left: 8px;
+  }
+  .trial-banner a:hover { text-decoration: underline; }
+  .trial-banner.visible { display: block; }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside>
+  <div class="brand">
+    <div class="brand-logo">
+      <div class="brand-icon" style="background:none;border-radius:8px;overflow:hidden">
+        <img src="/logo-192.png" style="width:30px;height:30px;border-radius:8px" alt="Logo" />
+      </div>
+      <span class="brand-name">Compra Inteligente</span>
+    </div>
+    <div class="brand-sub">Compras com IA</div>
+  </div>
+
+  <div class="nav-section" style="flex:none">
+    <div class="nav-label">Ferramentas</div>
+    <button class="nav-item active" onclick="navigate('chat', this)">
+      <span class="nav-dot"></span> Assistente IA
+    </button>
+    <button class="nav-item" onclick="navigate('rfq', this)">
+      <span class="nav-dot"></span> Gerar RFQ / Cotação
+    </button>
+    <button class="nav-item" onclick="navigate('analise', this)">
+      <span class="nav-dot"></span> Analisar cotações
+    </button>
+    <button class="nav-item" onclick="navigate('neg', this)">
+      <span class="nav-dot"></span> Negociação
+    </button>
+  </div>
+
+  <div class="conv-section">
+    <div class="conv-header">
+      <div class="nav-label">Conversas</div>
+      <button class="new-conv-btn" onclick="newConversation()" title="Nova conversa">+</button>
+    </div>
+    <div id="conv-list"></div>
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="user-info">
+      <div class="user-avatar" id="user-avatar"></div>
+      <div class="user-name" id="user-name"></div>
+    </div>
+    <a href="/manual.html" target="_blank" class="help-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      Ajuda / Manual
+    </a>
+    <button class="logout-btn" onclick="logout()">Sair da conta</button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main>
+  <div class="trial-banner" id="trial-banner"></div>
+  <div class="topbar">
+    <div>
+      <div class="topbar-title" id="bar-title">Assistente IA</div>
+      <div class="topbar-sub" id="bar-sub">Chat com especialista em procurement</div>
+    </div>
+    <div class="topbar-badge">IA Ativa</div>
+  </div>
+
+  <div class="content">
+
+    <!-- CHAT -->
+    <div class="panel active" id="panel-chat">
+      <div class="chat-wrap">
+        <div class="chat-messages" id="chat-messages">
+          <div class="msg-row ai">
+            <div class="msg-avatar ai">AI</div>
+            <div class="msg-bubble">Olá! Sou especialista em procurement e gestão de compras corporativas.<br><br>Posso ajudar com estratégia de sourcing, homologação de fornecedores, análise de contratos, TCO, compliance, negociação e muito mais. Como posso te ajudar?</div>
+          </div>
+        </div>
+        <div class="chat-input-wrap">
+          <textarea id="chat-input" rows="1" placeholder="Ex: Como reduzir custos sem comprometer qualidade?" onkeydown="handleKey(event)"></textarea>
+          <button class="send-btn" id="chat-send" onclick="sendChat()">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M2 8h12M9 3l5 5-5 5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RFQ -->
+    <div class="panel" id="panel-rfq">
+      <div class="section-title">RFQ — Requisição de Cotação</div>
+      <div class="section-sub">Preencha as informações abaixo e gere uma Requisição de Cotação (RFQ) profissional pronta para enviar aos fornecedores.</div>
+
+      <div class="card">
+        <div class="card-title">Informações da compra</div>
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>Produto ou serviço *</label>
+            <input id="rfq-produto" placeholder="Ex: Notebooks Dell, 50 unidades para departamento de TI" />
+          </div>
+          <div class="form-group">
+            <label>Quantidade</label>
+            <input id="rfq-qtd" placeholder="Ex: 50 unidades" />
+          </div>
+          <div class="form-group">
+            <label>Prazo de entrega desejado</label>
+            <input id="rfq-prazo" placeholder="Ex: 30 dias corridos" />
+          </div>
+          <div class="form-group">
+            <label>Validade da proposta</label>
+            <input id="rfq-validade" placeholder="Ex: 15 dias" />
+          </div>
+          <div class="form-group">
+            <label>Orçamento estimado (R$)</label>
+            <input id="rfq-orcamento" placeholder="Ex: 200.000,00 (opcional)" />
+          </div>
+          <div class="form-group full">
+            <label>Especificações técnicas</label>
+            <textarea id="rfq-specs" placeholder="Ex: Intel i5 12ª geração, 16GB RAM, SSD 512GB, Windows 11 Pro, garantia mínima 12 meses..."></textarea>
+          </div>
+          <div class="form-group full">
+            <label>Critérios de avaliação</label>
+            <textarea id="rfq-criterios" style="min-height:64px" placeholder="Ex: Preço 50%, Prazo de entrega 30%, Garantia e suporte 20%"></textarea>
+          </div>
+          <div class="form-group full">
+            <label>Observações adicionais</label>
+            <textarea id="rfq-obs" style="min-height:64px" placeholder="Ex: Entrega em São Paulo/SP. Incluir proposta de assistência técnica on-site."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-primary" id="rfq-btn" onclick="gerarRFQ()">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M8 1v10M4 7l4 4 4-4M2 13h12" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Gerar RFQ / Cotação
+      </button>
+
+      <div class="result-box" id="rfq-result">
+        <div class="result-label"><span class="result-dot"></span> RFQ (Requisição de Cotação) gerado</div>
+        <div id="rfq-result-text"></div>
+      </div>
+    </div>
+
+    <!-- ANÁLISE -->
+    <div class="panel" id="panel-analise">
+      <div class="section-title">Análise de cotações</div>
+      <div class="section-sub">Insira as propostas recebidas e obtenha análise comparativa com recomendação fundamentada de fornecedor.</div>
+
+      <div class="card">
+        <div class="card-title">Objeto da compra</div>
+        <div class="form-group">
+          <label>O que está sendo cotado? *</label>
+          <input id="an-item" placeholder="Ex: 50 notebooks para o departamento de TI" />
+        </div>
+        <div class="form-group" style="margin-top:14px">
+          <label>Critérios prioritários</label>
+          <input id="an-criterios" placeholder="Ex: Preço é o mais importante, mas prazo e garantia também são relevantes" />
+        </div>
+      </div>
+
+      <div id="suppliers-container">
+        <!-- JS insere os cartões dos fornecedores -->
+      </div>
+
+      <button class="btn-primary" id="an-btn" onclick="analisarCotacoes()">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M2 14l4-5 3 3 3-4 4 6" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Analisar cotações
+      </button>
+
+      <div class="result-box" id="an-result">
+        <div class="result-label"><span class="result-dot"></span> Análise comparativa</div>
+        <div id="an-result-text"></div>
+      </div>
+    </div>
+
+    <!-- NEGOCIAÇÃO -->
+    <div class="panel" id="panel-neg">
+      <div class="section-title">Apoio à negociação</div>
+      <div class="section-sub">Descreva o contexto e receba estratégia completa com BATNA, argumentos e script de abordagem.</div>
+
+      <div class="card">
+        <div class="card-title">Contexto da negociação</div>
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>O que está sendo negociado? *</label>
+            <input id="neg-item" placeholder="Ex: Renovação de contrato de licença de software ERP" />
+          </div>
+          <div class="form-group">
+            <label>Proposta atual do fornecedor</label>
+            <input id="neg-atual" placeholder="Ex: R$ 120.000/ano" />
+          </div>
+          <div class="form-group">
+            <label>Seu objetivo / orçamento</label>
+            <input id="neg-objetivo" placeholder="Ex: R$ 95.000/ano" />
+          </div>
+          <div class="form-group full">
+            <label>Tipo de negociação</label>
+            <select id="neg-tipo">
+              <option value="preco">Redução de preço</option>
+              <option value="prazo">Extensão de prazo de pagamento</option>
+              <option value="escopo">Ampliação de escopo sem aumento de custo</option>
+              <option value="renovacao">Renovação contratual</option>
+              <option value="sla">Melhoria de SLA / nível de serviço</option>
+              <option value="outro">Outro</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label>Seus pontos fortes</label>
+            <textarea id="neg-forcas" placeholder="Ex: Cliente há 5 anos, pagamentos sempre em dia, alto volume anual, temos proposta concorrente mais barata..."></textarea>
+          </div>
+          <div class="form-group full">
+            <label>Riscos e pontos de atenção</label>
+            <textarea id="neg-riscos" placeholder="Ex: Custo de migração é alto, equipe já treinada no sistema, contrato vence em 30 dias..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-primary" id="neg-btn" onclick="gerarNeg()">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M5 8h6M8 5l3 3-3 3" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Gerar estratégia
+      </button>
+
+      <div class="result-box" id="neg-result">
+        <div class="result-label"><span class="result-dot"></span> Estratégia de negociação</div>
+        <div id="neg-result-text"></div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</main>
+
+<script>
+// ── AUTH GUARD ──
+const token = localStorage.getItem('token');
+if (!token) { window.location.href = '/login'; }
+
+const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+document.getElementById('user-name').textContent = currentUser.name || 'Usuário';
+document.getElementById('user-avatar').textContent = (currentUser.name || 'U').charAt(0).toUpperCase();
+
+function logout() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+  window.location.href = '/login';
+}
+
+// ── CONFIG ──
+const SYS = `Você é um especialista sênior em procurement e gestão de compras corporativas com 15+ anos de experiência em empresas de médio e grande porte no Brasil. Domina sourcing estratégico, homologação de fornecedores, negociação de contratos, gestão de riscos, compliance, TCO, SRM e processos de RFQ/RFP/RFI. Responda sempre em português brasileiro de forma clara, objetiva e prática. Use **negrito** para destacar pontos-chave. Use quebras de linha para separar seções.`;
+
+const topTitles = {
+  chat:    ['Assistente IA',       'Chat com especialista em procurement'],
+  rfq:     ['RFQ — Requisição de Cotação', 'Documento formal para solicitar propostas de fornecedores'],
+  analise: ['Analisar cotações',   'Comparativo e recomendação de fornecedor'],
+  neg:     ['Negociação',          'Estratégia, BATNA e script de abordagem']
+};
+
+let chatHistory = [];
+let currentConvId = null;
+
+function navigate(id, el) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  el.classList.add('active');
+  const [t, s] = topTitles[id];
+  document.getElementById('bar-title').textContent = t;
+  document.getElementById('bar-sub').textContent = s;
+}
+
+// ── API (with auth) ──
+async function api(messages, conversationId) {
+  const res = await fetch('/api/chat', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token
+    },
+    body: JSON.stringify({ messages, system: SYS, max_tokens: 1500, conversationId })
+  });
+  if (res.status === 401) { logout(); return; }
+  if (res.status === 403) { const d = await res.json(); if (d.error === 'trial_expired') window.location.href = '/expired'; return; }
+  if (!res.ok) throw new Error('Erro na API');
+  const data = await res.json();
+  if (data.error) throw new Error(data.error);
+  return data;
+}
+
+async function apiFetch(url) {
+  const res = await fetch(url, {
+    headers: { 'Authorization': 'Bearer ' + token }
+  });
+  if (res.status === 401) { logout(); return; }
+  if (res.status === 403) { window.location.href = '/expired'; return; }
+  if (!res.ok) throw new Error('Erro');
+  return res.json();
+}
+
+async function checkPlanStatus() {
+  try {
+    const res = await fetch('/api/payment/status', { headers: { 'Authorization': 'Bearer ' + token } });
+    if (res.status === 401) { logout(); return; }
+    const data = await res.json();
+    if (data.plan === 'trial' && data.days_left > 0) {
+      const banner = document.getElementById('trial-banner');
+      banner.innerHTML = 'Trial gratuito: ' + data.days_left + ' dia' + (data.days_left > 1 ? 's' : '') + ' restante' + (data.days_left > 1 ? 's' : '') + '<a href="/expired">Assinar agora</a>';
+      banner.classList.add('visible');
+    } else if (data.plan === 'trial' && data.days_left <= 0) {
+      window.location.href = '/expired';
+    }
+  } catch(e) {}
+}
+checkPlanStatus();
+
+function fmt(text) {
+  return text
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\n/g, '<br>');
+}
+
+// ── CONVERSATIONS ──
+async function loadConversations() {
+  try {
+    const data = await apiFetch('/api/conversations');
+    if (!data) return;
+    const list = document.getElementById('conv-list');
+    list.innerHTML = '';
+    data.conversations.forEach(c => {
+      const btn = document.createElement('button');
+      btn.className = 'conv-item' + (c.id === currentConvId ? ' active' : '');
+      btn.textContent = c.title;
+      btn.onclick = () => loadConversation(c.id);
+      list.appendChild(btn);
+    });
+  } catch(e) { /* silently fail */ }
+}
+
+async function loadConversation(id) {
+  try {
+    const data = await apiFetch('/api/conversations/' + id + '/messages');
+    if (!data) return;
+    currentConvId = id;
+    chatHistory = data.messages.map(m => ({ role: m.role, content: m.content }));
+
+    // Render messages
+    const box = document.getElementById('chat-messages');
+    box.innerHTML = '';
+    data.messages.forEach(m => {
+      const role = m.role === 'assistant' ? 'ai' : 'user';
+      appendMsg(box, role, role === 'ai' ? fmt(m.content) : m.content);
+    });
+
+    // Switch to chat panel
+    const chatBtn = document.querySelector('.nav-item');
+    navigate('chat', chatBtn);
+
+    // Update active state in conv list
+    document.querySelectorAll('.conv-item').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.conv-item').forEach(el => {
+      if (el.textContent === document.querySelector(`.conv-item.active`)?.textContent) return;
+    });
+    loadConversations();
+  } catch(e) { /* silently fail */ }
+}
+
+function newConversation() {
+  currentConvId = null;
+  chatHistory = [];
+  const box = document.getElementById('chat-messages');
+  box.innerHTML = '';
+  appendMsg(box, 'ai', 'Olá! Sou especialista em procurement e gestão de compras corporativas.<br><br>Posso ajudar com estratégia de sourcing, homologação de fornecedores, análise de contratos, TCO, compliance, negociação e muito mais. Como posso te ajudar?');
+
+  // Switch to chat panel
+  const chatBtn = document.querySelector('.nav-item');
+  navigate('chat', chatBtn);
+
+  // Clear active conv
+  document.querySelectorAll('.conv-item').forEach(el => el.classList.remove('active'));
+}
+
+// ── CHAT ──
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); }
+}
+
+async function sendChat() {
+  const inp = document.getElementById('chat-input');
+  const msg = inp.value.trim();
+  if (!msg) return;
+  const box = document.getElementById('chat-messages');
+  inp.value = '';
+  autoResize(inp);
+
+  appendMsg(box, 'user', msg);
+  const typingEl = appendTyping(box);
+  document.getElementById('chat-send').disabled = true;
+
+  chatHistory.push({ role: 'user', content: msg });
+  try {
+    const data = await api(chatHistory, currentConvId);
+    if (!data) return;
+    chatHistory.push({ role: 'assistant', content: data.text });
+    currentConvId = data.conversationId;
+    typingEl.remove();
+    appendMsg(box, 'ai', fmt(data.text));
+    loadConversations();
+  } catch(e) {
+    typingEl.remove();
+    appendMsg(box, 'ai', '<span style="color:#c87a14">Erro ao conectar. Verifique o servidor.</span>');
+    chatHistory.pop();
+  }
+  document.getElementById('chat-send').disabled = false;
+}
+
+function appendMsg(box, role, html) {
+  const row = document.createElement('div');
+  row.className = 'msg-row ' + role;
+  const initials = role === 'ai' ? 'AI' : 'VC';
+  row.innerHTML = `<div class="msg-avatar ${role}">${initials}</div><div class="msg-bubble">${html}</div>`;
+  box.appendChild(row);
+  box.scrollTop = box.scrollHeight;
+  return row;
+}
+
+function appendTyping(box) {
+  const row = document.createElement('div');
+  row.className = 'msg-row ai';
+  row.innerHTML = `<div class="msg-avatar ai">AI</div><div class="msg-bubble"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>`;
+  box.appendChild(row);
+  box.scrollTop = box.scrollHeight;
+  return row;
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 140) + 'px';
+}
+document.getElementById('chat-input').addEventListener('input', function() { autoResize(this); });
+
+// ── FORNECEDORES (análise) ──
+(function buildSuppliers() {
+  const c = document.getElementById('suppliers-container');
+  for (let i = 1; i <= 3; i++) {
+    c.innerHTML += `
+    <div class="card">
+      <div class="card-title">
+        <div class="supplier-row">
+          <div class="supplier-num">${i}</div>
+          Fornecedor ${i}
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="form-group"><label>Nome da empresa</label><input class="s-nome" id="s${i}-nome" placeholder="Ex: TechSupply Ltda" /></div>
+        <div class="form-group"><label>Valor total (R$)</label><input class="s-valor" id="s${i}-valor" placeholder="Ex: 185.000,00" /></div>
+        <div class="form-group"><label>Prazo de entrega</label><input class="s-prazo" id="s${i}-prazo" placeholder="Ex: 20 dias" /></div>
+        <div class="form-group"><label>Garantia / SLA</label><input class="s-garantia" id="s${i}-garantia" placeholder="Ex: 12 meses on-site" /></div>
+        <div class="form-group full"><label>Diferenciais e observações</label><input id="s${i}-obs" placeholder="Ex: ISO 9001, suporte 24h, referências no setor..." /></div>
+      </div>
+    </div>`;
+  }
+})();
+
+// ── RFQ ──
+async function gerarRFQ() {
+  const p = document.getElementById('rfq-produto').value.trim();
+  if (!p) { alert('Informe o produto ou serviço.'); return; }
+  setLoading('rfq-btn', true);
+  const prompt = `Gere uma RFQ (Requisição de Cotação) formal e completa:\n\n- Produto/Serviço: ${p}\n- Quantidade: ${v('rfq-qtd') || 'A definir'}\n- Prazo desejado: ${v('rfq-prazo') || 'A definir'}\n- Validade da proposta: ${v('rfq-validade') || '15 dias'}\n- Orçamento: ${v('rfq-orcamento') || 'Não informado'}\n- Especificações técnicas: ${v('rfq-specs') || 'Conforme padrão de mercado'}\n- Critérios de avaliação: ${v('rfq-criterios') || 'Preço, qualidade e prazo'}\n- Observações: ${v('rfq-obs') || 'N/A'}\n\nFormate como documento corporativo profissional com:\n1. Cabeçalho e identificação do processo\n2. Objeto da contratação\n3. Especificações técnicas detalhadas\n4. Condições comerciais exigidas\n5. Instruções para apresentação da proposta\n6. Critérios de avaliação e desclassificação\n7. Cláusula de confidencialidade\n8. Contato e prazo para envio`;
+  try {
+    const data = await api([{ role: 'user', content: prompt }]);
+    showResult('rfq-result', 'rfq-result-text', data.text);
+  } catch(e) { alert('Erro ao gerar RFQ. Verifique o servidor.'); }
+  setLoading('rfq-btn', false);
+}
+
+// ── ANÁLISE ──
+async function analisarCotacoes() {
+  const it = v('an-item');
+  if (!it) { alert('Informe o que está sendo cotado.'); return; }
+  let fs = '';
+  for (let i = 1; i <= 3; i++) {
+    const nm = v(`s${i}-nome`);
+    if (nm) fs += `\nFornecedor ${i}: ${nm}\n  Valor: R$ ${v(`s${i}-valor`) || 'N/I'} | Prazo: ${v(`s${i}-prazo`) || 'N/I'} | Garantia: ${v(`s${i}-garantia`) || 'N/I'}\n  Obs: ${v(`s${i}-obs`) || '-'}\n`;
+  }
+  if (!fs) { alert('Preencha ao menos um fornecedor.'); return; }
+  setLoading('an-btn', true);
+  const prompt = `Analise comparativamente as seguintes cotações para: ${it}\n${fs}\nCritérios prioritários: ${v('an-criterios') || 'Melhor custo-benefício'}\n\nForneça:\n1. **Tabela comparativa** (texto estruturado)\n2. **Pontos fortes e fracos** de cada fornecedor\n3. **Análise de TCO** quando relevante\n4. **Recomendação clara e justificada** indicando o fornecedor vencedor\n5. **Riscos** e pontos de atenção\n6. **Próximos passos** sugeridos`;
+  try {
+    const data = await api([{ role: 'user', content: prompt }]);
+    showResult('an-result', 'an-result-text', data.text);
+  } catch(e) { alert('Erro ao analisar. Verifique o servidor.'); }
+  setLoading('an-btn', false);
+}
+
+// ── NEGOCIAÇÃO ──
+async function gerarNeg() {
+  const it = v('neg-item');
+  if (!it) { alert('Informe o que está sendo negociado.'); return; }
+  const tipos = { preco:'Redução de preço', prazo:'Extensão de prazo de pagamento', escopo:'Ampliação de escopo', renovacao:'Renovação contratual', sla:'Melhoria de SLA', outro:'Outro' };
+  setLoading('neg-btn', true);
+  const prompt = `Crie estratégia completa de negociação:\n\n- Item: ${it}\n- Tipo: ${tipos[document.getElementById('neg-tipo').value]}\n- Proposta atual do fornecedor: ${v('neg-atual') || 'N/I'}\n- Meu objetivo: ${v('neg-objetivo') || 'N/I'}\n- Meus pontos fortes: ${v('neg-forcas') || 'N/I'}\n- Riscos e pontos de atenção: ${v('neg-riscos') || 'N/I'}\n\nInclua:\n1. **Análise da situação** e posicionamento estratégico\n2. **BATNA** — melhor alternativa se não houver acordo\n3. **Estratégia e sequência** recomendada\n4. **Principais argumentos** e como apresentá-los\n5. **Concessões possíveis** e contrapartidas aceitáveis\n6. **Script de abertura** e respostas para as principais objeções\n7. **O que evitar** nesta negociação`;
+  try {
+    const data = await api([{ role: 'user', content: prompt }]);
+    showResult('neg-result', 'neg-result-text', data.text);
+  } catch(e) { alert('Erro ao gerar estratégia. Verifique o servidor.'); }
+  setLoading('neg-btn', false);
+}
+
+// ── HELPERS ──
+function v(id) { return document.getElementById(id)?.value.trim() || ''; }
+
+function showResult(boxId, textId, text) {
+  const box = document.getElementById(boxId);
+  document.getElementById(textId).innerHTML = fmt(text);
+  box.classList.add('visible');
+  box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function setLoading(btnId, loading) {
+  const btn = document.getElementById(btnId);
+  if (loading) {
+    btn.disabled = true;
+    btn._orig = btn.innerHTML;
+    btn.innerHTML = '<span class="spinner"></span> Processando...';
+  } else {
+    btn.disabled = false;
+    btn.innerHTML = btn._orig;
+  }
+}
+
+// ── INIT ──
+loadConversations();
+</script>
+</body>
+</html>
