@@ -598,6 +598,147 @@
   }
   .trial-banner a:hover { text-decoration: underline; }
   .trial-banner.visible { display: block; }
+
+  /* ── EXAMPLES & TUTORIALS ── */
+  .ex-intro {
+    background: linear-gradient(135deg, rgba(91,79,255,0.06), rgba(124,111,255,0.04));
+    border: 1px solid rgba(91,79,255,0.15);
+    border-radius: var(--radius2);
+    padding: 18px 22px;
+    margin-bottom: 28px;
+    font-size: var(--fs-sm);
+    line-height: 1.6;
+    color: var(--text2);
+  }
+  .ex-intro strong { color: var(--text1); font-weight: 600; }
+  .ex-intro-tag {
+    display: inline-block;
+    background: rgba(91,79,255,0.12);
+    color: var(--accent);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+  }
+
+  .ex-step {
+    margin-top: 28px;
+  }
+  .ex-step:first-of-type { margin-top: 8px; }
+
+  .ex-step-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .ex-step-num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .ex-step-title {
+    font-size: var(--fs-md);
+    font-weight: 600;
+    color: var(--text1);
+  }
+  .ex-step-sub {
+    font-size: var(--fs-sm);
+    color: var(--text2);
+    margin: 4px 0 14px 40px;
+    line-height: 1.55;
+  }
+
+  .ex-input-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .ex-input-grid .full { grid-column: 1 / -1; }
+
+  .ex-input {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+  .ex-input-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 4px;
+  }
+  .ex-input-value {
+    font-size: var(--fs-sm);
+    color: var(--text1);
+    line-height: 1.5;
+    word-break: break-word;
+  }
+
+  .ex-output {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--success);
+    border-radius: var(--radius);
+    padding: 18px 22px;
+    margin-top: 16px;
+    font-size: var(--fs-sm);
+    line-height: 1.7;
+    color: var(--text1);
+    white-space: pre-wrap;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .ex-output-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--success);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .ex-output-label::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--success);
+  }
+  .ex-output strong { font-weight: 600; }
+
+  .ex-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8px 0;
+    font-size: var(--fs-sm);
+  }
+  .ex-table th, .ex-table td {
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    text-align: left;
+    vertical-align: top;
+  }
+  .ex-table th {
+    background: var(--bg);
+    font-weight: 600;
+    color: var(--text2);
+    font-size: 12px;
+  }
+  .ex-table td.win {
+    background: rgba(26,158,106,0.06);
+    font-weight: 500;
+  }
 </style>
 </head>
 <body>
@@ -627,6 +768,16 @@
     </button>
     <button class="nav-item" onclick="navigate('neg', this)">
       <span class="nav-dot"></span> Negociação
+    </button>
+  </div>
+
+  <div class="nav-section" style="flex:none; padding-top:0">
+    <div class="nav-label">Exemplos &amp; Tutoriais</div>
+    <button class="nav-item" onclick="navigate('exemplo-notebooks', this)">
+      <span class="nav-dot" style="background:var(--success)"></span> Notebooks para TI
+    </button>
+    <button class="nav-item" onclick="navigate('exemplo-frota', this)">
+      <span class="nav-dot" style="background:var(--success)"></span> Frota terceirizada
     </button>
   </div>
 
@@ -821,6 +972,499 @@
       </div>
     </div>
 
+    <!-- ────── EXEMPLO 1: NOTEBOOKS PARA TI ────── -->
+    <div class="panel" id="panel-exemplo-notebooks">
+      <div class="section-title">📚 Caso prático — Notebooks Dell para TI</div>
+      <div class="section-sub">Percorra as 4 ferramentas do Compra Inteligente aplicadas a um cenário real de compra corporativa.</div>
+
+      <div class="ex-intro">
+        <span class="ex-intro-tag">Tutorial</span>
+        <strong>Cenário:</strong> A TechCorp, empresa de médio porte do setor financeiro com 200 colaboradores, precisa renovar o parque de notebooks do departamento de TI. Comprador sênior (você) recebeu o seguinte briefing da diretoria:
+        <ul style="margin:10px 0 4px 18px; line-height:1.7">
+          <li><strong>Necessidade:</strong> 50 notebooks de alto desempenho para desenvolvedores e SREs</li>
+          <li><strong>Orçamento aprovado:</strong> R$ 200.000</li>
+          <li><strong>Prazo:</strong> entrega em até 30 dias</li>
+          <li><strong>Restrições críticas:</strong> garantia mínima de 3 anos com suporte on-site, equipamento homologado pela TI</li>
+        </ul>
+        Veja abaixo como o Compra Inteligente resolve cada etapa.
+      </div>
+
+      <!-- ETAPA 1 -->
+      <div class="ex-step">
+        <div class="ex-step-header">
+          <div class="ex-step-num">1</div>
+          <div class="ex-step-title">💬 Assistente IA — entender o terreno</div>
+        </div>
+        <div class="ex-step-sub">Antes de cotar, vale conversar com o assistente para validar critérios técnicos e identificar pegadinhas comuns nessa categoria de compra.</div>
+
+        <div class="card">
+          <div class="msg-row user">
+            <div class="msg-avatar user">U</div>
+            <div class="msg-bubble">Quero comprar 50 notebooks Dell para minha equipe de TI. Qual a melhor abordagem para selecionar fornecedores e garantir TCO baixo nos próximos 3 anos?</div>
+          </div>
+          <div class="msg-row ai">
+            <div class="msg-avatar ai">AI</div>
+            <div class="msg-bubble">Excelente movimento começar com TCO em mente, não só preço de aquisição. Para essa categoria, o que importa:<br><br>
+              <strong>1. Selecione 3 perfis de fornecedor</strong> — sempre traga o fabricante direto (Dell B2B), um revendedor autorizado de alto volume e um integrador. Isso te dá referência de mercado e cria leverage de negociação.<br><br>
+              <strong>2. Exija comprovação de "ProSupport Plus" ou equivalente</strong> — garantia de 3 anos com atendimento on-site no mesmo dia útil. Sem isso, você importa o custo de manutenção pra dentro de casa.<br><br>
+              <strong>3. Cuidado com revendedores não autorizados</strong> — preço pode ser 8-15% menor mas garantia da Dell pode ser recusada. Peça sempre <strong>certificado de revenda autorizada</strong> e número de PartnerDirect ID.<br><br>
+              <strong>4. TCO em 3 anos inclui:</strong> aquisição + extensão de garantia se aplicável + custo médio de 1 reparo fora de garantia (~R$ 1.200/notebook) + perda de produtividade por downtime + descarte/leilão final.<br><br>
+              <strong>5. Negocie como pacote:</strong> tente combo de hardware + suporte gerenciado + Microsoft 365 ou ferramenta de MDM. Volume + escopo aumenta seu poder de barganha.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ETAPA 2 -->
+      <div class="ex-step">
+        <div class="ex-step-header">
+          <div class="ex-step-num">2</div>
+          <div class="ex-step-title">📄 RFQ — formalizar a Requisição de Cotação</div>
+        </div>
+        <div class="ex-step-sub">Com os critérios claros, o próximo passo é gerar um documento formal para enviar aos fornecedores selecionados.</div>
+
+        <div class="card">
+          <div class="card-title">Dados preenchidos</div>
+          <div class="ex-input-grid">
+            <div class="ex-input full"><div class="ex-input-label">Produto / Serviço</div><div class="ex-input-value">50 notebooks Dell Latitude 5440 para departamento de TI corporativa</div></div>
+            <div class="ex-input"><div class="ex-input-label">Quantidade</div><div class="ex-input-value">50 unidades</div></div>
+            <div class="ex-input"><div class="ex-input-label">Prazo de entrega</div><div class="ex-input-value">30 dias corridos</div></div>
+            <div class="ex-input"><div class="ex-input-label">Validade da proposta</div><div class="ex-input-value">15 dias</div></div>
+            <div class="ex-input"><div class="ex-input-label">Orçamento estimado</div><div class="ex-input-value">R$ 200.000,00</div></div>
+            <div class="ex-input full"><div class="ex-input-label">Especificações técnicas</div><div class="ex-input-value">Intel Core i5 13ª geração ou superior, 16GB DDR5, SSD NVMe 512GB, tela 14" Full HD anti-reflexo, Windows 11 Pro, garantia mínima 36 meses ProSupport com atendimento on-site, teclado ABNT2 retroiluminado, leitor biométrico, TPM 2.0.</div></div>
+            <div class="ex-input full"><div class="ex-input-label">Critérios de avaliação</div><div class="ex-input-value">Preço (40%), Prazo de entrega (25%), Garantia e suporte (25%), Capacidade técnica e referências (10%)</div></div>
+          </div>
+        </div>
+
+        <div class="ex-output">
+          <div class="ex-output-label">Documento RFQ gerado pela IA</div><strong>REQUISIÇÃO DE COTAÇÃO Nº 2026-001</strong>
+
+<strong>1. OBJETO</strong>
+Aquisição de 50 (cinquenta) notebooks Dell Latitude 5440 destinados ao departamento de Tecnologia da Informação, com finalidade de equipar desenvolvedores, analistas de SRE e equipe de suporte interno.
+
+<strong>2. ESPECIFICAÇÕES TÉCNICAS MÍNIMAS</strong>
+• Processador Intel Core i5 de 13ª geração ou superior
+• Memória RAM: 16GB DDR5
+• Armazenamento: SSD NVMe 512GB
+• Tela: 14" Full HD (1920x1080) com tratamento anti-reflexo
+• Sistema operacional: Windows 11 Pro pré-instalado
+• Garantia mínima: 36 meses ProSupport com atendimento on-site no próximo dia útil
+• Teclado ABNT2 com retroiluminação
+• Leitor biométrico de impressão digital
+• Chip TPM 2.0 para criptografia corporativa
+• Bateria com autonomia mínima de 8 horas em uso comum
+
+<strong>3. CONDIÇÕES COMERCIAIS</strong>
+• Quantidade: 50 unidades
+• Prazo máximo de entrega: 30 dias corridos a partir da emissão da Ordem de Compra
+• Validade da proposta: mínimo 15 dias corridos
+• Forma de pagamento: a combinar (preferência: 30 dias DDL ou parcelado em até 3x)
+• Local de entrega: Sede TechCorp — Av. Paulista, São Paulo/SP
+
+<strong>4. CRITÉRIOS DE AVALIAÇÃO</strong>
+As propostas serão avaliadas com base em ponderação:
+• Preço total: 40%
+• Prazo de entrega: 25%
+• Garantia e suporte (cobertura, SLA, on-site): 25%
+• Capacidade técnica e referências de clientes similares: 10%
+
+<strong>5. DOCUMENTAÇÃO OBRIGATÓRIA</strong>
+• Certificado de revenda autorizada Dell (PartnerDirect ID)
+• Comprovante de capacidade financeira
+• 2 referências comerciais de pedidos com volume similar nos últimos 24 meses
+
+<strong>6. CONFIDENCIALIDADE</strong>
+Toda informação técnica, comercial e estratégica trocada no contexto desta RFQ será tratada como confidencial pelas partes, vedada sua divulgação a terceiros sem autorização expressa por escrito.
+
+<strong>7. PRAZO PARA ENVIO DE PROPOSTAS</strong>
+Até 7 dias corridos a contar do recebimento desta Requisição.
+
+<strong>8. CONTATO PARA DÚVIDAS</strong>
+compras@techcorp.com.br | (11) 99999-0000</div>
+      </div>
+
+      <!-- ETAPA 3 -->
+      <div class="ex-step">
+        <div class="ex-step-header">
+          <div class="ex-step-num">3</div>
+          <div class="ex-step-title">📊 Análise de Cotações — comparar e decidir</div>
+        </div>
+        <div class="ex-step-sub">Os fornecedores responderam. Hora de comparar lado a lado, calcular TCO e gerar uma recomendação fundamentada.</div>
+
+        <div class="card">
+          <div class="card-title">3 fornecedores cotaram</div>
+          <table class="ex-table">
+            <thead><tr><th>Critério</th><th>A — Dell B2B Direto</th><th>B — TechMax (revenda autorizada)</th><th>C — Brasília Computers</th></tr></thead>
+            <tbody>
+              <tr><td>Preço total</td><td>R$ 195.000<br><small>(R$ 3.900/un)</small></td><td>R$ 188.000<br><small>(R$ 3.760/un)</small></td><td>R$ 178.000<br><small>(R$ 3.560/un)</small></td></tr>
+              <tr><td>Prazo de entrega</td><td>35 dias</td><td>25 dias</td><td>45 dias</td></tr>
+              <tr><td>Garantia</td><td>36 meses ProSupport on-site</td><td>24 meses + on-site limitado</td><td>12 meses padrão</td></tr>
+              <tr><td>Revenda autorizada</td><td>Fabricante direto</td><td>Sim (Gold Partner)</td><td>Não comprovado</td></tr>
+              <tr><td>Pagamento</td><td>30 DDL</td><td>3x sem juros</td><td>À vista com 5% desconto</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="ex-output">
+          <div class="ex-output-label">Análise gerada pela IA</div><strong>📋 ANÁLISE COMPARATIVA</strong>
+
+<strong>Pontos fortes e fracos por proposta:</strong>
+
+<strong>A — Dell B2B Direto (R$ 195.000)</strong>
+✓ Garantia ProSupport 36m com on-site é referência de mercado
+✓ Risco zero de fraude na garantia (relação direta com fabricante)
+✓ Dentro do orçamento aprovado (R$ 200k)
+✗ Prazo 35 dias estoura em 5 dias o requisito de 30 dias
+✗ Preço unitário não é o mais competitivo
+
+<strong>B — TechMax (R$ 188.000)</strong>
+✓ Único dentro dos 30 dias (entrega em 25 dias)
+✓ Pagamento parcelado preserva fluxo de caixa
+✗ Garantia 24m exige extensão paga (~R$ 8.500 estimados) para chegar a 36m
+✗ "On-site limitado" precisa ser auditado em contrato
+
+<strong>C — Brasília Computers (R$ 178.000)</strong>
+✓ Menor preço de aquisição
+✗ Sem comprovação de revenda autorizada — ALTO RISCO de garantia recusada
+✗ Garantia 12m está bem abaixo da exigência (36m)
+✗ Prazo de 45 dias inviabiliza o projeto
+
+<strong>💰 ANÁLISE DE TCO (3 anos)</strong>
+| Cenário | Aquisição | Extensão garantia | Reparos extra | <strong>TCO total</strong> |
+|---------|-----------|-------------------|---------------|------------------|
+| A — Dell direto | R$ 195k | R$ 0 | R$ 5k | <strong>R$ 200.000</strong> |
+| B — TechMax | R$ 188k | R$ 8,5k | R$ 18k | <strong>R$ 214.500</strong> |
+| C — Brasília | R$ 178k | R$ 25k | R$ 60k* | <strong>R$ 263.000</strong> |
+
+<small>*Estimado considerando risco alto de garantia recusada e necessidade de reparos pagos.</small>
+
+<strong>🎯 RECOMENDAÇÃO: Fornecedor A (Dell B2B Direto)</strong>
+
+Apesar de não ser o menor preço de aquisição, é o de menor TCO em 3 anos e elimina o risco operacional de garantia. Dois pontos a negociar:
+1. Reduzir prazo de 35 para 30 dias (entrega parcial em lotes pode resolver)
+2. Conseguir desconto de 5-7% baseado em volume e relacionamento futuro
+
+<strong>⚠️ RISCOS IDENTIFICADOS</strong>
+• Fornecedor C tem 80% de probabilidade de gerar problema de garantia em 24 meses — DESCARTAR
+• Fornecedor B precisa cláusula contratual explícita sobre on-site (escopo, raio, SLA)
+
+<strong>📌 PRÓXIMOS PASSOS</strong>
+1. Abrir negociação com Fornecedor A focada em prazo + 5-7% desconto
+2. Manter Fornecedor B como BATNA — comunicar isso à Dell sutilmente
+3. Não considerar Fornecedor C nesta rodada</div>
+      </div>
+
+      <!-- ETAPA 4 -->
+      <div class="ex-step">
+        <div class="ex-step-header">
+          <div class="ex-step-num">4</div>
+          <div class="ex-step-title">🤝 Negociação — fechar com a melhor condição</div>
+        </div>
+        <div class="ex-step-sub">Com a recomendação clara, vamos preparar a negociação com a Dell. A IA monta a estratégia completa antes da reunião.</div>
+
+        <div class="card">
+          <div class="card-title">Contexto preenchido</div>
+          <div class="ex-input-grid">
+            <div class="ex-input full"><div class="ex-input-label">O que está sendo negociado</div><div class="ex-input-value">Compra de 50 notebooks Dell Latitude 5440 — proposta atual da Dell B2B em R$ 195.000 com prazo 35 dias</div></div>
+            <div class="ex-input"><div class="ex-input-label">Proposta atual</div><div class="ex-input-value">R$ 195.000 / 35 dias</div></div>
+            <div class="ex-input"><div class="ex-input-label">Objetivo</div><div class="ex-input-value">R$ 180.000 / 30 dias</div></div>
+            <div class="ex-input full"><div class="ex-input-label">Tipo de negociação</div><div class="ex-input-value">Redução de preço + ajuste de prazo</div></div>
+            <div class="ex-input full"><div class="ex-input-label">Pontos fortes</div><div class="ex-input-value">TechCorp já tem 80 notebooks Dell em uso; alto volume previsto pra próximos 3 anos (renovação por turnos); possibilidade de contrato anual de manutenção; temos proposta concorrente da TechMax em R$ 188.000.</div></div>
+            <div class="ex-input full"><div class="ex-input-label">Riscos / pontos de atenção</div><div class="ex-input-value">Concorrente B (TechMax) tem garantia menor e on-site limitado — não é BATNA forte. Equipe de TI já familiarizada com Dell. Mudar de fornecedor adicionaria custo de migração de imagem corporativa.</div></div>
+          </div>
+        </div>
+
+        <div class="ex-output">
+          <div class="ex-output-label">Estratégia de negociação gerada</div><strong>🎯 ANÁLISE DE POSICIONAMENTO</strong>
+Posição: <strong>moderadamente forte</strong>. Você tem volume, histórico e uma BATNA verossímil — mas a Dell sabe que mudar custa pra você. Não tente ganho agressivo (-15%); foque em -7-8% defendido por argumentos sólidos.
+
+<strong>🛡️ BATNA — sua melhor alternativa</strong>
+Fornecedor B (TechMax) a R$ 188.000 com garantia limitada. <strong>BATNA real ajustada</strong> = R$ 188.000 + R$ 8.500 (extensão de garantia) = <strong>R$ 196.500 efetivos</strong>. Ou seja, sua BATNA é praticamente igual à proposta da Dell — use isso com cuidado, não como ameaça.
+
+<strong>📋 ESTRATÉGIA RECOMENDADA</strong>
+Negocie em duas frentes simultâneas:
+1. <strong>Preço:</strong> alvo R$ 180k (~7,7% off). Defenda com volume + histórico + perspectiva de renovação 2026/2027
+2. <strong>Prazo:</strong> alvo 30 dias. Aceite entrega em 2 lotes (25 unidades em 25 dias + 25 unidades em 35 dias) se for o impeditivo
+
+<strong>💬 ARGUMENTOS PRINCIPAIS</strong>
+1. <strong>"Volume previsível"</strong> — apresente projeção de compras dos próximos 3 anos (50 + 30 + 40 unidades). Dell valoriza pipeline.
+2. <strong>"Padronização do parque"</strong> — vocês já têm 80 Dell. Mudar pra outro fabricante geraria custo operacional alto. Posicione: "queremos continuar Dell, mas precisamos justificar internamente."
+3. <strong>"Combo de soluções"</strong> — proponha incluir contrato de manutenção gerenciada ou MDM nesta cotação. Aumenta ticket pra Dell, te dá leverage de desconto.
+
+<strong>🎤 ROTEIRO DE ABERTURA</strong>
+"Olá [nome]. Recebemos sua proposta de R$ 195k e ela é tecnicamente a mais sólida — sem dúvida. Mas vou ser direto: temos uma alternativa válida em R$ 188k e precisamos justificar internamente a diferença. Antes de fechar, queria ver se há espaço pra construir algo que faça sentido pros dois lados — considerando que somos cliente Dell há anos e temos previsão de mais 70 unidades nos próximos 24 meses. O que você consegue revisar?"
+
+<strong>🔄 CONCESSÕES ACEITÁVEIS</strong>
+• Aceitar prazo de 35 dias se conseguir R$ 180k
+• Aceitar pagamento à vista com desconto adicional
+• Assumir compromisso documentado de renovação preferencial Dell por 24 meses
+
+<strong>⛔ RESPOSTAS A OBJEÇÕES</strong>
+• <em>"R$ 180k está abaixo do nosso piso"</em> → "Entendo. Que tal R$ 183k mantendo o ProSupport?"
+• <em>"O TechMax não tem on-site real"</em> → "Concordo, é por isso que viemos primeiro a vocês — mas precisamos da margem pra defender a recomendação."
+• <em>"Não conseguimos antecipar 30 dias"</em> → "Sem problema. Topo entrega em 2 lotes? 25 em 25 dias, 25 em 35 dias?"
+
+<strong>🚫 O QUE EVITAR</strong>
+• Não revele que descartou o Fornecedor C — mantém ar de "tenho 3 opções"
+• Não ameace mudar de fornecedor de forma agressiva — Dell sabe que migração custa caro pra você
+• Não aceite prazos de pagamento desfavoráveis em troca de desconto pequeno (não vale 1x90 por -2%)</div>
+      </div>
+
+      <div class="ex-intro" style="margin-top:32px; margin-bottom:0">
+        <strong>🎓 O que você acabou de ver:</strong> em ~10 minutos, o Compra Inteligente cobre o ciclo completo de uma compra corporativa de R$ 200 mil — análise estratégica, documentação formal, decisão fundamentada e estratégia de negociação. Tudo o que normalmente toma dias da sua equipe.
+      </div>
+    </div>
+
+    <!-- ────── EXEMPLO 2: FROTA TERCEIRIZADA ────── -->
+    <div class="panel" id="panel-exemplo-frota">
+      <div class="section-title">📚 Caso prático — Frota terceirizada</div>
+      <div class="section-sub">Locação corporativa de 20 veículos por 24 meses — ciclo completo passando pelas 4 ferramentas.</div>
+
+      <div class="ex-intro">
+        <span class="ex-intro-tag">Tutorial</span>
+        <strong>Cenário:</strong> A Logitrans, empresa de logística com 300 colaboradores e 14 filiais no Brasil, vai terceirizar a frota corporativa por 24 meses. Comprador sênior (você) recebeu o briefing:
+        <ul style="margin:10px 0 4px 18px; line-height:1.7">
+          <li><strong>Necessidade:</strong> 12 sedans executivos para diretoria + 8 SUVs utilitários para equipe comercial</li>
+          <li><strong>Período:</strong> contrato de 24 meses</li>
+          <li><strong>Orçamento estimado:</strong> R$ 90.000/mês</li>
+          <li><strong>Restrições críticas:</strong> manutenção full inclusa, telemetria embarcada, SLA agressivo de substituição (max 24h), capilaridade nacional</li>
+        </ul>
+        Veja como o Compra Inteligente conduz cada etapa.
+      </div>
+
+      <!-- ETAPA 1 -->
+      <div class="ex-step">
+        <div class="ex-step-header">
+          <div class="ex-step-num">1</div>
+          <div class="ex-step-title">💬 Assistente IA — entender as armadilhas do contrato</div>
+        </div>
+        <div class="ex-step-sub">Locação de frota tem cláusulas que parecem inocentes mas podem custar caro em 24 meses. Vale validar antes de cotar.</div>
+
+        <div class="card">
+          <div class="msg-row user">
+            <div class="msg-avatar user">U</div>
+            <div class="msg-bubble">Quero terceirizar uma frota de 20 veículos pra minha empresa. O que considerar pra não cair em pegadinha de contrato?</div>
+          </div>
+          <div class="msg-row ai">
+            <div class="msg-avatar ai">AI</div>
+            <div class="msg-bubble">Boa pergunta. Locação de frota é categoria onde o "preço de tabela" engana — o que importa é o detalhe contratual. Pontos críticos:<br><br>
+              <strong>1. Quilometragem inclusa</strong> — peça franquia mensal por veículo (ex: 3.000-3.500 km/mês). Excedente costuma custar R$ 0,40-0,80/km — pode virar surpresa de R$ 5-15k/mês se sua operação rodar mais que o estimado.<br><br>
+              <strong>2. Política de troca / idade da frota</strong> — exija idade média máxima de 12 meses no início e troca obrigatória a cada 18-24 meses. Frota velha = quebra mais = SLA de substituição é acionado e tudo trava.<br><br>
+              <strong>3. SLA de substituição</strong> — em caso de pane, em quanto tempo o veículo é trocado? Padrão de mercado é 12-24h. Se fala "até 72h" no contrato, problema seu.<br><br>
+              <strong>4. Multa rescisória</strong> — leia com lupa. Saída antecipada nos primeiros 12 meses pode chegar a 3-6 meses de aluguel.<br><br>
+              <strong>5. Telemetria e relatórios</strong> — exija dashboard com consumo, manutenções, infrações por motorista. Sem isso você não tem governança.<br><br>
+              <strong>6. Seguro e franquia</strong> — quem paga em caso de sinistro com culpa do motorista? Defina tetos. Algumas locadoras passam toda a franquia pra você — pode chegar a R$ 8-15k por sinistro.<br><br>
+              <strong>7. Quem fica com a depreciação</strong> — em locação operacional pura, a depreciação não é sua. Não aceite contratos híbridos onde você "ajuda a financiar" o veículo sem direito ao residual.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ETAPA 2 -->
+      <div class="ex-step">
+        <div class="ex-step-header">
+          <div class="ex-step-num">2</div>
+          <div class="ex-step-title">📄 RFQ — formalizar a Requisição</div>
+        </div>
+        <div class="ex-step-sub">Com os critérios contratuais claros, geramos a RFQ formal pra enviar pras locadoras.</div>
+
+        <div class="card">
+          <div class="card-title">Dados preenchidos</div>
+          <div class="ex-input-grid">
+            <div class="ex-input full"><div class="ex-input-label">Produto / Serviço</div><div class="ex-input-value">Locação de frota corporativa: 12 sedans executivos + 8 SUVs utilitários, contrato de 24 meses, manutenção full inclusa</div></div>
+            <div class="ex-input"><div class="ex-input-label">Quantidade</div><div class="ex-input-value">20 veículos (12 + 8)</div></div>
+            <div class="ex-input"><div class="ex-input-label">Período do contrato</div><div class="ex-input-value">24 meses</div></div>
+            <div class="ex-input"><div class="ex-input-label">Validade da proposta</div><div class="ex-input-value">30 dias</div></div>
+            <div class="ex-input"><div class="ex-input-label">Orçamento estimado</div><div class="ex-input-value">R$ 90.000/mês</div></div>
+            <div class="ex-input full"><div class="ex-input-label">Especificações técnicas</div><div class="ex-input-value">Sedans: até 3 anos de fabricação, motorização 1.4-1.6 turbo, ar condicionado digital, central multimídia. SUVs: 2.0+, 5 lugares, tração 4x2. Quilometragem livre até 3.500 km/mês por veículo. Trocas e revisões inclusas. Substituição em até 24h em caso de pane. GPS e telemetria embarcada com dashboard web. Seguro completo com franquia limitada a R$ 5.000 por sinistro.</div></div>
+            <div class="ex-input full"><div class="ex-input-label">Critérios de avaliação</div><div class="ex-input-value">Preço total (35%), Qualidade da frota e idade média (25%), SLA de substituição (20%), Telemetria e relatórios (10%), Capilaridade nacional (10%)</div></div>
+          </div>
+        </div>
+
+        <div class="ex-output">
+          <div class="ex-output-label">Documento RFQ gerado pela IA</div><strong>REQUISIÇÃO DE COTAÇÃO Nº 2026-002</strong>
+
+<strong>1. OBJETO</strong>
+Contratação de empresa especializada em locação de frota corporativa para fornecimento de 20 veículos (12 sedans executivos + 8 SUVs utilitários) pelo período de 24 meses, com manutenção full e telemetria inclusas.
+
+<strong>2. ESCOPO DETALHADO</strong>
+<strong>2.1. Sedans executivos (12 unidades):</strong>
+• Idade máxima: até 3 anos de fabricação no início do contrato
+• Motorização: 1.4 a 1.6 turbo (mínimo 130cv)
+• Equipamentos: ar-condicionado digital, central multimídia 8" com Apple CarPlay/Android Auto, alarme, vidros e travas elétricas, airbags frontais e laterais
+
+<strong>2.2. SUVs utilitários (8 unidades):</strong>
+• Idade máxima: até 3 anos de fabricação
+• Motorização: 2.0 ou superior, tração 4x2
+• Lugares: 5 com porta-malas mínimo 400L
+• Equipamentos: mesmos do sedan + sensores de estacionamento
+
+<strong>3. CONDIÇÕES OPERACIONAIS</strong>
+• Quilometragem livre: até 3.500 km/mês por veículo (média da frota)
+• Manutenção: 100% inclusa (revisões, óleo, pneus a cada 50.000km, freios, suspensão)
+• Substituição em pane: máximo 24h (SLA contratual com multa por descumprimento)
+• Telemetria: GPS embarcado + dashboard web com relatórios mensais (consumo, multas, manutenções)
+• Seguro: cobertura completa, franquia máxima de R$ 5.000 por sinistro
+• Troca de frota: obrigatória aos 18 meses para 50% da frota
+
+<strong>4. CONDIÇÕES COMERCIAIS</strong>
+• Pagamento: mensal antecipado, dia 5 do mês corrente
+• Reajuste: anual pelo IPCA, vedado reajuste antes de 12 meses
+• Multa rescisória: máximo 2 meses de aluguel após o 12º mês
+• Capilaridade exigida: presença em mínimo 20 estados (sede em SP/RJ/MG/RS)
+
+<strong>5. CRITÉRIOS DE AVALIAÇÃO</strong>
+• Preço total: 35%
+• Qualidade da frota e idade média: 25%
+• SLA de substituição: 20%
+• Telemetria e relatórios: 10%
+• Capilaridade nacional: 10%
+
+<strong>6. PRAZO PARA ENVIO DE PROPOSTAS</strong>
+14 dias corridos a contar do recebimento.
+
+<strong>7. CONFIDENCIALIDADE</strong>
+Informações trocadas no âmbito desta RFQ são confidenciais.
+
+<strong>8. CONTATO</strong>
+compras@logitrans.com.br | (11) 99888-7777</div>
+      </div>
+
+      <!-- ETAPA 3 -->
+      <div class="ex-step">
+        <div class="ex-step-header">
+          <div class="ex-step-num">3</div>
+          <div class="ex-step-title">📊 Análise de Cotações — comparar Localiza, Movida e Unidas</div>
+        </div>
+        <div class="ex-step-sub">Três grandes locadoras responderam. Vamos comparar com base em custo total e operacional.</div>
+
+        <div class="card">
+          <div class="card-title">3 fornecedores cotaram</div>
+          <table class="ex-table">
+            <thead><tr><th>Critério</th><th>A — Localiza</th><th>B — Movida</th><th>C — Unidas</th></tr></thead>
+            <tbody>
+              <tr><td>Mensalidade</td><td>R$ 92.000</td><td>R$ 88.500</td><td>R$ 85.000</td></tr>
+              <tr><td>Idade média da frota</td><td>6 meses</td><td>8 meses</td><td>14 meses</td></tr>
+              <tr><td>SLA substituição</td><td>12h</td><td>24h</td><td>48h</td></tr>
+              <tr><td>Telemetria</td><td>Premium (relatórios + alertas)</td><td>Padrão</td><td>Básica</td></tr>
+              <tr><td>Capilaridade</td><td>24 estados</td><td>22 estados</td><td>15 estados</td></tr>
+              <tr><td>Franquia sinistro</td><td>R$ 5.000</td><td>R$ 7.500</td><td>R$ 10.000</td></tr>
+              <tr><td>Multa rescisória</td><td>2 meses</td><td>3 meses</td><td>3 meses</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="ex-output">
+          <div class="ex-output-label">Análise gerada pela IA</div><strong>📋 ANÁLISE COMPARATIVA</strong>
+
+<strong>A — Localiza (R$ 92.000/mês)</strong>
+✓ Frota mais nova (6 meses) — menor risco de quebra
+✓ SLA 12h é benchmark de mercado — para empresa de logística onde tempo parado custa caro, isso é diferencial real
+✓ Telemetria premium permite governança e redução de combustível em até 8%
+✓ Capilaridade nacional cobre todas as filiais da Logitrans
+✗ R$ 6.000/mês mais cara que Unidas
+
+<strong>B — Movida (R$ 88.500/mês)</strong>
+✓ Bom balanço preço/qualidade
+✓ Capilaridade quase equivalente a Localiza
+✗ SLA 24h é o limite aceitável — pode comprometer operação em panes simultâneas
+✗ Telemetria padrão sem alertas proativos
+
+<strong>C — Unidas (R$ 85.000/mês)</strong>
+✓ Menor mensalidade
+✗ Frota com 14 meses no início — tende a piorar nos meses 12-24 do contrato
+✗ SLA 48h é INCOMPATÍVEL com operação de logística
+✗ Capilaridade 15 estados deixa filiais Norte/Nordeste descobertas
+✗ Franquia R$ 10k é alta — em caso de 5 sinistros/ano vira R$ 50k não previstos
+
+<strong>💰 ANÁLISE DE TCO (24 meses)</strong>
+| Cenário | Mensalidades | Sinistros (estim.) | Downtime SLA* | <strong>TCO total</strong> |
+|---------|--------------|--------------------|---------------|------------------|
+| A — Localiza | R$ 2.208.000 | R$ 25.000 | R$ 0 | <strong>R$ 2.233.000</strong> |
+| B — Movida | R$ 2.124.000 | R$ 37.500 | R$ 24.000 | <strong>R$ 2.185.500</strong> |
+| C — Unidas | R$ 2.040.000 | R$ 50.000 | R$ 96.000 | <strong>R$ 2.186.000</strong> |
+
+<small>*Custo de produtividade perdida: 2 panes/mês × 24h adicionais × R$ 500/dia.</small>
+
+<strong>🎯 RECOMENDAÇÃO: Fornecedor A (Localiza)</strong>
+
+A diferença de TCO entre Localiza (R$ 2,23M) e Movida (R$ 2,19M) é de apenas R$ 47k em 24 meses (2,1%). Considerando que:
+• Localiza elimina o risco operacional do SLA (logística depende de mobilidade)
+• Telemetria premium pode gerar economia de combustível ~R$ 35-50k em 24m
+• Capilaridade total cobre toda a operação
+
+<strong>O ganho operacional supera o custo extra.</strong> Movida é uma alternativa válida (BATNA) mas Unidas deve ser descartada pelo SLA incompatível.
+
+<strong>⚠️ RISCOS IDENTIFICADOS</strong>
+• Movida: telemetria padrão pode esconder padrões de uso indevido — exigir SLA de relatórios mensais
+• Unidas: 5 estados descobertos = a Logitrans precisaria contratar locadora local nessas regiões — custo oculto não cotado
+
+<strong>📌 PRÓXIMOS PASSOS</strong>
+1. Negociar com Localiza redução de R$ 3-5k/mês usando Movida como BATNA
+2. Confirmar cláusula de telemetria premium no contrato
+3. Validar capilaridade com lista das 14 filiais Logitrans</div>
+      </div>
+
+      <!-- ETAPA 4 -->
+      <div class="ex-step">
+        <div class="ex-step-header">
+          <div class="ex-step-num">4</div>
+          <div class="ex-step-title">🤝 Negociação — fechar com a Localiza</div>
+        </div>
+        <div class="ex-step-sub">Estratégia completa pra reduzir o custo mensal mantendo as condições operacionais.</div>
+
+        <div class="card">
+          <div class="card-title">Contexto preenchido</div>
+          <div class="ex-input-grid">
+            <div class="ex-input full"><div class="ex-input-label">O que está sendo negociado</div><div class="ex-input-value">Locação de 20 veículos por 24 meses — proposta da Localiza em R$ 92.000/mês com SLA 12h</div></div>
+            <div class="ex-input"><div class="ex-input-label">Proposta atual</div><div class="ex-input-value">R$ 92.000/mês</div></div>
+            <div class="ex-input"><div class="ex-input-label">Objetivo</div><div class="ex-input-value">R$ 87.000/mês mantendo SLA 12h</div></div>
+            <div class="ex-input full"><div class="ex-input-label">Tipo de negociação</div><div class="ex-input-value">Redução de preço (5,4%)</div></div>
+            <div class="ex-input full"><div class="ex-input-label">Pontos fortes</div><div class="ex-input-value">Volume alto (20 veículos), contrato longo (24 meses), pagamento antecipado mensal, perfil de cliente baixo risco (logística regulamentada com 14 filiais nacionais), Movida ofereceu R$ 88.500. Possibilidade de expansão da frota em 2027.</div></div>
+            <div class="ex-input full"><div class="ex-input-label">Riscos / pontos de atenção</div><div class="ex-input-value">Localiza é referência de mercado e tem capilaridade única no Brasil. Mudar pra Movida adiciona risco operacional (SLA 24h). Time interno já tem processos com plataforma Localiza Empresas.</div></div>
+          </div>
+        </div>
+
+        <div class="ex-output">
+          <div class="ex-output-label">Estratégia de negociação gerada</div><strong>🎯 ANÁLISE DE POSICIONAMENTO</strong>
+Posição: <strong>moderada</strong>. Você tem volume e duração razoáveis, mas a Localiza sabe que ela é a única com cobertura nacional + SLA 12h. Foque em desconto de 5-7% (margem realista) defendido por concorrência real e expansão futura.
+
+<strong>🛡️ BATNA — sua melhor alternativa</strong>
+Movida a R$ 88.500/mês — economia bruta de R$ 84k em 24m. <strong>Mas:</strong> custo de SLA 24h estimado em R$ 24k + custo de operacional descoberto = <strong>BATNA real ~R$ 96.000/mês equivalente</strong>. Use Movida como pressão, mas saiba que sua BATNA é menos forte do que parece à primeira vista.
+
+<strong>📋 ESTRATÉGIA RECOMENDADA</strong>
+1. <strong>Alvo realista:</strong> R$ 87.500-88.500/mês (5-5,4% off)
+2. <strong>Negocie em pacote:</strong> preço + ampliação de capilaridade + cláusula de expansão futura sem aumento de mensalidade
+3. <strong>Use o tempo:</strong> Localiza tem fechamento trimestral — última semana do trimestre é o momento ideal pra propor
+
+<strong>💬 ARGUMENTOS PRINCIPAIS</strong>
+1. <strong>"Concorrência real, não bluff"</strong> — apresente a proposta da Movida sem ocultar SLA mais fraco. Posição: "preferimos vocês mas precisamos defender internamente uma diferença de R$ 3,5k/mês."
+2. <strong>"Pipeline de expansão"</strong> — Logitrans planeja crescer frota em 2027 (+10 veículos). Ofereça compromisso de exclusividade preferencial em troca de desconto.
+3. <strong>"Pagamento antecipado garantido"</strong> — proponha pagamento em D-5 do mês anterior (em vez de D+5). Vale 0,5-1% de desconto.
+
+<strong>🎤 ROTEIRO DE ABERTURA</strong>
+"Boa tarde [nome]. Recebemos sua proposta e ela é tecnicamente a mais sólida — sem questão. Mas vou ser direto: a Movida cotou R$ 88.500. Sabemos que o SLA deles é mais fraco, então o gap real é menor — mas não é zero. Pra fecharmos com vocês, preciso justificar internamente. Considerando que somos uma operação de 24 meses, com pipeline de expansão pra 2027 e perfil de pagamento antecipado, qual é o melhor número que vocês conseguem trabalhar mantendo o SLA 12h?"
+
+<strong>🔄 CONCESSÕES ACEITÁVEIS</strong>
+• Aceitar reajuste anual pelo IPCA cheio (em vez de IPCA-1%) em troca de R$ 3k/mês a menos
+• Compromisso documentado de expansão de frota em 2027 com Localiza
+• Aceitar franquia de R$ 6.000 (vs R$ 5.000 atual) se trouxer R$ 1.500/mês de desconto
+
+<strong>⛔ RESPOSTAS A OBJEÇÕES</strong>
+• <em>"R$ 87.000 está abaixo do nosso piso operacional"</em> → "Entendo. Que tal R$ 88.500 com cláusula de expansão preferencial 2027 e pagamento D-5?"
+• <em>"A Movida é menor, não é referência justa"</em> → "Concordo. É justamente por isso que vim primeiro a vocês — mas o time interno precisa do número."
+• <em>"Não conseguimos mexer no preço, podemos melhorar SLA"</em> → "Já tenho SLA 12h, que é excelente. O que muda mesmo é R$/mês."
+
+<strong>🚫 O QUE EVITAR</strong>
+• Não revele que descartou Unidas — mantenha 3 alternativas como narrativa
+• Não aceite "desconto temporário só nos primeiros 6 meses" — vira complicação contratual
+• Não troque SLA por preço — operação de logística depende disso
+• Não aceite reajuste anual sem teto — peça IPCA limitado a 8% como cap</div>
+      </div>
+
+      <div class="ex-intro" style="margin-top:32px; margin-bottom:0">
+        <strong>🎓 O que você acabou de ver:</strong> em ~10 minutos, o Compra Inteligente cobriu uma decisão de R$ 2,2 milhões em 24 meses — incluindo análise de risco operacional, comparação de TCO realista e estratégia de negociação calibrada. <strong>Agora é sua vez:</strong> abra o "Assistente IA" no menu e comece pelo seu próprio caso.
+      </div>
+    </div>
+
   </div><!-- /content -->
 </main>
 
@@ -846,7 +1490,9 @@ const topTitles = {
   chat:    ['Assistente IA',       'Chat com especialista em procurement'],
   rfq:     ['RFQ — Requisição de Cotação', 'Documento formal para solicitar propostas de fornecedores'],
   analise: ['Analisar cotações',   'Comparativo e recomendação de fornecedor'],
-  neg:     ['Negociação',          'Estratégia, BATNA e script de abordagem']
+  neg:     ['Negociação',          'Estratégia, BATNA e script de abordagem'],
+  'exemplo-notebooks': ['Exemplo: Notebooks Dell para TI', 'Caso prático percorrendo as 4 ferramentas do Compra Inteligente'],
+  'exemplo-frota':     ['Exemplo: Frota terceirizada',    'Caso prático percorrendo as 4 ferramentas do Compra Inteligente']
 };
 
 let chatHistory = [];
