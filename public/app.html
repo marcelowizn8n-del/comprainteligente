@@ -599,6 +599,56 @@
   .trial-banner a:hover { text-decoration: underline; }
   .trial-banner.visible { display: block; }
 
+  /* ── PACTOHUB INTEGRATION BANNER ── */
+  .pacto-banner {
+    display: none;
+    background: linear-gradient(135deg, rgba(8,145,178,0.08), rgba(91,79,255,0.06));
+    border-bottom: 1px solid rgba(8,145,178,0.2);
+    color: var(--text1);
+    font-size: 13px;
+    padding: 10px 24px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .pacto-banner.visible { display: flex; }
+  .pacto-banner__left { display: flex; align-items: center; gap: 12px; }
+  .pacto-banner__mark {
+    width: 22px; height: 22px;
+    background: #0891b2;
+    color: white;
+    border-radius: 5px;
+    display: grid; place-items: center;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 13px;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  .pacto-banner__text { color: var(--text2); }
+  .pacto-banner__text strong { color: var(--text1); font-weight: 600; }
+  .pacto-banner__back {
+    color: #0891b2;
+    text-decoration: none;
+    font-weight: 500;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: opacity .15s;
+  }
+  .pacto-banner__back:hover { opacity: 0.7; }
+  .pacto-banner__close {
+    background: none;
+    border: none;
+    color: var(--text3);
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    padding: 4px 8px;
+  }
+  .pacto-banner__close:hover { color: var(--text1); }
+
   /* ── EXAMPLES & TUTORIALS ── */
   .ex-intro {
     background: linear-gradient(135deg, rgba(91,79,255,0.06), rgba(124,111,255,0.04));
@@ -742,6 +792,18 @@
 </style>
 </head>
 <body>
+
+<!-- PACTOHUB INTEGRATION BANNER (above everything) -->
+<div class="pacto-banner" id="pacto-banner" style="position:fixed;top:0;left:0;right:0;z-index:1000">
+  <div class="pacto-banner__left">
+    <span class="pacto-banner__mark">P</span>
+    <span class="pacto-banner__text"><strong>Você veio do PactoHub.</strong> <span id="pacto-banner-ctx">Use o consultor aqui e volte pra concluir.</span></span>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px">
+    <a class="pacto-banner__back" href="https://pactohub.pro" target="_blank" rel="noopener">↩ Voltar pro PactoHub</a>
+    <button class="pacto-banner__close" onclick="document.getElementById('pacto-banner').classList.remove('visible')" aria-label="Fechar">×</button>
+  </div>
+</div>
 
 <!-- SIDEBAR -->
 <aside>
@@ -1771,6 +1833,47 @@ function setLoading(btnId, loading) {
 
 // ── INIT ──
 loadConversations();
+
+// ── PACTOHUB INTEGRATION ──
+(function handlePactoHubContext() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('from') !== 'pactohub') return;
+
+  // Show banner
+  const banner = document.getElementById('pacto-banner');
+  if (banner) banner.classList.add('visible');
+
+  // Adjust body padding so banner doesn't overlap (banner is ~40px high)
+  document.body.style.paddingTop = '40px';
+
+  const ferramenta = params.get('ferramenta');
+  const ctx = document.getElementById('pacto-banner-ctx');
+
+  // Wait briefly for navigate function and panels to be ready
+  setTimeout(() => {
+    if (ferramenta === 'neg') {
+      const navBtn = document.querySelector('[onclick*="navigate(\'neg\'"]');
+      if (navBtn) navigate('neg', navBtn);
+      const item = params.get('item') || '';
+      const itens = params.get('itens') || '';
+      const itemField = document.getElementById('neg-item');
+      const riscosField = document.getElementById('neg-riscos');
+      if (itemField && item) itemField.value = item;
+      if (riscosField && itens) riscosField.value = 'Itens do pedido vindo do PactoHub:\n' + itens.replace(/\s\|\s/g, '\n');
+      if (ctx) ctx.textContent = 'Contexto da negociação preenchido — complete os campos restantes e gere a estratégia.';
+    } else if (ferramenta === 'rfq') {
+      const navBtn = document.querySelector('[onclick*="navigate(\'rfq\'"]');
+      if (navBtn) navigate('rfq', navBtn);
+      const produto = params.get('produto') || '';
+      const quantidade = params.get('quantidade') || '';
+      const produtoField = document.getElementById('rfq-produto');
+      const qtdField = document.getElementById('rfq-qtd');
+      if (produtoField && produto) produtoField.value = produto;
+      if (qtdField && quantidade) qtdField.value = quantidade;
+      if (ctx) ctx.textContent = 'RFQ pré-preenchido com dados do pedido — revise e gere o documento formal.';
+    }
+  }, 300);
+})();
 </script>
 </body>
 </html>

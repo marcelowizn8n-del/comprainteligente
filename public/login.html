@@ -216,7 +216,7 @@
 
 <script>
 if (localStorage.getItem('token')) {
-  window.location.href = '/app';
+  window.location.href = '/app' + window.location.search;
 }
 
 async function handleLogin(e) {
@@ -246,7 +246,7 @@ async function handleLogin(e) {
     }
     localStorage.setItem('token', data.token);
     localStorage.setItem('user', JSON.stringify(data.user));
-    window.location.href = '/app';
+    window.location.href = '/app' + window.location.search;
   } catch {
     errEl.textContent = 'Erro de conexão. Tente novamente.';
     errEl.classList.add('visible');
