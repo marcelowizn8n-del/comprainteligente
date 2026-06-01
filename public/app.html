@@ -599,6 +599,36 @@
   .trial-banner a:hover { text-decoration: underline; }
   .trial-banner.visible { display: block; }
 
+  /* ── CLIENT CO-BRAND ── */
+  .cobrand-bar {
+    display: none;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 20px;
+    background: linear-gradient(90deg, rgba(91,79,255,0.05), rgba(124,111,255,0.08));
+    border-bottom: 1px solid var(--border);
+  }
+  .cobrand-bar.visible { display: flex; }
+  .cobrand-bar img {
+    height: 28px;
+    width: auto;
+    object-fit: contain;
+  }
+  .cobrand-bar .cobrand-text {
+    font-size: 12px;
+    color: var(--text2);
+    font-weight: 500;
+  }
+  .cobrand-bar .cobrand-text strong {
+    color: var(--text1);
+    font-weight: 600;
+  }
+  .cobrand-bar .cobrand-divider {
+    width: 1px;
+    height: 22px;
+    background: var(--border2);
+  }
+
   /* ── PACTOHUB INTEGRATION BANNER ── */
   .pacto-banner {
     display: none;
@@ -866,6 +896,11 @@
 
 <!-- MAIN -->
 <main>
+  <div class="cobrand-bar" id="cobrand-bar">
+    <img id="cobrand-logo" alt="" />
+    <div class="cobrand-divider"></div>
+    <div class="cobrand-text" id="cobrand-text"></div>
+  </div>
   <div class="trial-banner" id="trial-banner"></div>
   <div class="topbar">
     <div>
@@ -1581,7 +1616,7 @@ async function api(messages, conversationId) {
     body: JSON.stringify({ messages, system: SYS, max_tokens: 1500, conversationId })
   });
   if (res.status === 401) { logout(); return; }
-  if (res.status === 403) { const d = await res.json(); if (d.error === 'trial_expired') window.location.href = '/expired'; return; }
+  if (res.status === 403) { const d = await res.json(); if (d.error === 'trial_expired' && !isClientMode) window.location.href = '/expired'; return; }
   if (!res.ok) throw new Error('Erro na API');
   const data = await res.json();
   if (data.error) throw new Error(data.error);
@@ -1593,12 +1628,38 @@ async function apiFetch(url) {
     headers: { 'Authorization': 'Bearer ' + token }
   });
   if (res.status === 401) { logout(); return; }
-  if (res.status === 403) { window.location.href = '/expired'; return; }
+  if (res.status === 403) { if (!isClientMode) window.location.href = '/expired'; return; }
   if (!res.ok) throw new Error('Erro');
   return res.json();
 }
 
+// ── CLIENT BRANDING (PowerPic etc.) ──
+const CLIENTS = {
+  powerpic: {
+    name: 'PowerPic',
+    logo: '/clients/powerpic-logo.png',
+    text: 'Plataforma exclusiva <strong>PowerPic</strong> — desenvolvida por Thinking Tools'
+  }
+};
+function applyClientBranding() {
+  const url = new URLSearchParams(window.location.search);
+  const fromUrl = url.get('cliente');
+  if (fromUrl) localStorage.setItem('cliente_demo', fromUrl);
+  const slug = fromUrl || localStorage.getItem('cliente_demo');
+  if (!slug || !CLIENTS[slug]) return false;
+  const cfg = CLIENTS[slug];
+  const bar = document.getElementById('cobrand-bar');
+  document.getElementById('cobrand-logo').src = cfg.logo;
+  document.getElementById('cobrand-logo').alt = cfg.name;
+  document.getElementById('cobrand-text').innerHTML = cfg.text;
+  bar.classList.add('visible');
+  document.title = 'Compra Inteligente · ' + cfg.name;
+  return true;
+}
+const isClientMode = applyClientBranding();
+
 async function checkPlanStatus() {
+  if (isClientMode) return;
   try {
     const res = await fetch('/api/payment/status', { headers: { 'Authorization': 'Bearer ' + token } });
     if (res.status === 401) { logout(); return; }

@@ -270,6 +270,8 @@ app.get('/pricing', (req, res) => res.sendFile(path.join(__dirname, 'public', 'p
 app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'public', 'admin.html')));
 app.get('/expired', (req, res) => res.sendFile(path.join(__dirname, 'public', 'expired.html')));
 
+app.get('/powerpic', (req, res) => res.redirect('/?cliente=powerpic'));
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.listen(PORT, () => {

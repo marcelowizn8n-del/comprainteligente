@@ -254,6 +254,25 @@ async function handleLogin(e) {
     btn.textContent = 'Entrar';
   }
 }
+
+(function clientBranding() {
+  const CLIENTS = { powerpic: { name: 'PowerPic', logo: '/clients/powerpic-logo.png' } };
+  const slug = new URLSearchParams(window.location.search).get('cliente');
+  if (!slug || !CLIENTS[slug]) return;
+  const cfg = CLIENTS[slug];
+  document.title = 'Entrar · ' + cfg.name;
+  document.querySelectorAll('a[href^="/pricing"]').forEach(a => a.style.display = 'none');
+  document.querySelectorAll('a[href^="/"]').forEach(a => {
+    if (a.style.display === 'none') return;
+    const url = new URL(a.getAttribute('href'), window.location.origin);
+    url.searchParams.set('cliente', slug);
+    a.setAttribute('href', url.pathname + url.search);
+  });
+  const bar = document.createElement('div');
+  bar.style.cssText = 'background:linear-gradient(90deg,#5b4fff,#7c6fff);color:#fff;padding:10px 20px;display:flex;align-items:center;justify-content:center;gap:14px;font-size:13px;font-weight:500;font-family:DM Sans,sans-serif';
+  bar.innerHTML = '<img src="' + cfg.logo + '" alt="' + cfg.name + '" style="height:24px;background:#fff;padding:3px 6px;border-radius:4px" /><span>Acesso exclusivo <strong>' + cfg.name + '</strong></span>';
+  document.body.insertBefore(bar, document.body.firstChild);
+})();
 </script>
 
 </body>
